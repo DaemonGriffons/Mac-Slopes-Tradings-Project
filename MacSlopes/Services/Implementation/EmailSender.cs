@@ -23,7 +23,7 @@ namespace MacSlopes.Services.Implementation
         //}
         public Task SendMail(string email, string subject, string body)
         {
-           return Execute("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", subject, body, email);
+           return Execute("SendGrid API Key", subject, body, email);
         }
 
         private Task Execute(string apiKey, string subject, string message, string email)
@@ -31,7 +31,7 @@ namespace MacSlopes.Services.Implementation
             var client = new SendGridClient(apiKey);
             var msg = new SendGridMessage()
             {
-                From = new EmailAddress("daemongriffons@gmail.com", "Daemon Griffons"),
+                From = new EmailAddress("Your Email Address", "User Name"),
                 Subject = subject,
                 PlainTextContent = message,
                 HtmlContent = message,

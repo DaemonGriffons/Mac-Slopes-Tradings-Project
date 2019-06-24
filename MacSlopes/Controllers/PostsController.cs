@@ -185,16 +185,6 @@ namespace MacSlopes.Controllers
                 Body = post.Body,
                 DatePosted = post.DatePublished,
                 MainComments = post.MainComments,
-                //this is the problematic part.. i need a collection of categories using the foreign key called category
-                //Id from the posts entity
-                //can you fix it?
-                // wait lets see first... what is this
-                //this id is a string so i want to ignore all case sensitiv
-                //what should i do now?
-                //the only key word in linq that can resolve your issue is called include. 
-                // i am not sure what you was trying to do with the view models you did in the models folder
-                // but you can use inlclude, the ref of categories in the post model make it virtual
-                //wait lemme show you something
                 Categories = post.Categories.Where(x => x.Id.Equals(post.CategoryId))
                 
             };
