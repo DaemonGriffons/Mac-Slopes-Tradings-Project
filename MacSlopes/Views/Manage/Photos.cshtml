@@ -1,0 +1,42 @@
+﻿@model PhotoUploadViewModel
+@{
+    ViewData["Title"] = "Photo Upload";
+    ViewData.AddActivePage(ManageNavPages.Photos);
+    Layout = "_Layout";
+}
+
+<div class="justify-content-center">
+    @if (!String.IsNullOrWhiteSpace(Model.Thumbnail))
+    {
+        var src = $"/api/Images/{Model.Thumbnail}";
+        <div class="col-lg-6 col-md-6 ml-auto mr-auto">
+            <div class="card bg-primary text-white">
+                <img class="card-img" src="@src" alt="Card image">
+            </div>
+        </div>
+    }
+    <div class="col-lg-6 col-md-6 ml-auto mr-auto">
+        <form class="form" asp-action="Photos" enctype="multipart/form-data" asp-controller="Manage">
+            <input asp-for="Thumbnail" type="hidden"/>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                        <i class="now-ui-icons media-1_album"></i>
+                    </div>
+                </div>
+                <input asp-for="Image" class="form-control"/>
+            </div>
+            <span asp-validation-for="Image" class="text-primary"></span>
+            <div class="form-group mt-4">
+
+                <button type="submit" class="btn btn-lg btn-block btn-primary btn-round">Upload Photo</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}

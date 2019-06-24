@@ -1,0 +1,196 @@
+﻿@model PostListViewModel
+@{
+    ViewData["Title"] = "Blog Post List Home";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="panel-header">
+    <div class="header text-center">
+        <h2 class="title">Blog Posts</h2>
+        <p class="category">
+            @ViewData["Title"]<br />
+            <a class="btn btn-primary"
+               asp-action="CreatePost"
+               asp-controller="Posts">
+                Add New Blog Post
+            </a>
+        </p>
+    </div>
+</div>
+
+@if (!Model.PostsIndexViewModels.Any())
+{
+    <div class="content">
+        <div class="row mt-2">
+            <div class="col-md-10 ml-auto mr-auto">
+                <div class="alert alert-danger alert-with-icon" data-notify="container">
+                    <span data-notify="icon" class="now-ui-icons objects_support-17"></span>
+                    <span data-notify="message">You have not created blog posts yet..<br />Try Adding Some Blog Post Categories</span>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="content">
+        <div class="row mt-2">
+            <div class="col-md-12">
+                <div class="card card-tasks">
+                    <div class="card-header">
+                        <h4 class="card-title text-center">Search Below for Blog Posts</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-4">
+                            <div class="col-md-6 ml-auto">
+                                <form class="form" action="/Posts/Index/@Model.Search">
+                                    <div class="input-group">
+                                        <input asp-for="Search" autocomplete="on" class="form-control" placeholder="Search Here...." />
+                                        <div class="input-group-append">
+                                            <button type="submit" class="input-group-text">
+                                                <i class="now-ui-icons ui-1_zoom-bold"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="table-full-width table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Image
+                                        </th>
+                                        <th>
+                                            Title
+                                        </th>
+                                        <th>
+                                            Description
+                                        </th>
+                                        <th>
+                                            Comments
+                                        </th>
+                                        <th>Likes</th>
+                                        <th>
+                                            Published ?
+                                        </th>
+                                        <th>
+                                            Actions
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var post in Model.PostsIndexViewModels)
+                                    {
+                                        var scr = $"/api/Images/{post.ImageUrl}";
+                                        var Url = $"/Posts/Delete/{post.Id}";
+                                        <tr>
+                                            <td>
+                                                <a asp-action="Post" asp-controller="Posts" asp-route-id="@post.Id">
+                                                    <img src="@scr" alt="@post.Title image" class="img-fluid imageresize" />
+                                                </a>
+                                            </td>
+                                            <td>
+                                                @post.Title
+                                            </td>
+                                            <td>
+                                                @post.Description
+                                            </td>
+                                            <td>
+                                            <td>
+                                                @post.CommentCount
+                                            </td>
+                                            <td>
+                                                4
+                                            </td>
+                                            <td>
+                                                @if (post.IsPublished)
+                                                {
+                                                    <i class="now-ui-icons ui-1_check check-success"></i>
+                                                }
+                                                else
+                                                {
+                                                    <i class="now-ui-icons ui-1_simple-remove check-danger"></i>
+                                                }
+                                            </td>
+                                            <td class="td-actions">
+                                                <a asp-action="Post" asp-controller="Posts" asp-route-id="@post.Id" rel="tooltip" title=""
+                                                   class="btn btn-success btn-round btn-icon btn-icon-mini btn-neutral"
+                                                   data-original-title="Edit Post">
+                                                    <i class="now-ui-icons gestures_tap-01"></i>
+                                                </a>
+                                                <a asp-action="Edit" asp-controller="Posts" asp-route-id="@post.Id" rel="tooltip" title=""
+                                                   class="btn btn-info btn-round btn-icon btn-icon-mini btn-neutral"
+                                                   data-original-title="Edit Post">
+                                                    <i class="now-ui-icons ui-2_settings-90"></i>
+                                                </a>
+                                                <a onclick="Delete('@Url')" title=""
+                                                   class="btn btn-info btn-round btn-icon btn-icon-mini btn-neutral"
+                                                   data-original-title="Edit Post">
+                                                    <i class="now-ui-icons ui-1_simple-remove"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="row justify-content-center mb-3 mt-3">
+                            <pager list="@Model.PostsIndexViewModels"
+                                   options="@PagedListRenderOptions.TwitterBootstrapPager4"
+                                   asp-action="Index"
+                                   asp-controller="Posts">
+                            </pager>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+@section Scripts{
+    <script type="text/javascript">
+
+        function Delete(url) {
+            var Url = url;
+            var redirectUrl = "/Posts/Index";
+            var target;
+            $('body').append(`
+                        <div class="modal fade modal-mini modal-primary" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                             <div class="modal-content">
+                              
+                            <div class="modal-body delete-modal-body">
+                                <h5 class="text-center">Are you Sure You want to delete this Item</h5>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal" id="cancel-delete">Cancel</button>
+                                <button type="button" class="btn btn-danger" id="confirm-delete">Delete</button>
+                            </div>
+                            </div>
+                        </div>
+                        </div>`);
+            $("#deleteModal").modal('show');
+            $("#confirm-delete").on('click', (e) => {
+                target = e.target;
+                $.post(Url)
+                    .done((result) => {
+                        if (!redirectUrl) {
+                            return $(target).parent().parent().hide("slow");
+                        }
+                        window.location.href = redirectUrl;
+                    })
+                    .fail((error) => {
+                        if (redirectUrl)
+                            window.location.href = redirectUrl;
+                    }).always(() => {
+                        $("#deleteModal").modal('hide');
+                    });
+            });
+        }
+    </script>
+}

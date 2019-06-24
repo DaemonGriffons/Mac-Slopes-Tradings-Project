@@ -1,0 +1,76 @@
+﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification\ 
+for details on configuring this project to bundle and minify static web assets. */
+body {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Wrapping element */
+/* Set some basic padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Carousel */
+.carousel-caption p {
+    font-size: 20px;
+    line-height: 1.4;
+}
+
+.page-header-image{
+    background-image:url(/images/login.jpg) !important;
+}
+
+.card-footer{
+    margin-left:15px !important;
+    margin-right:15px !important;
+}
+
+.card-footer .btn{
+    margin-bottom:20px !important;
+}
+
+.form-check label {
+    color: ghostwhite !important;
+}
+.form-check .form-check-sign {
+    color: ghostwhite !important;
+}
+.section-manage {
+    background-image: url('../images/arrows-blur-buttons-2115257.jpg');
+    background-position: center !important;
+}
+.imageresize{
+    height: 80px !important;
+    width: 120px !important;
+    margin: 15px !important;
+}
+#cke_BlogBody{
+    width: 100% !important;
+}
+
+.input-group > input[type=file] {
+    color: inherit !important;
+    background-color: inherit !important;
+}
+
+.easy-autocomplete-container{
+    top:35px;
+}
+.easy-autocomplete input{
+    width:100% !important;
+}
+
+/* QR code generator */
+#qrCode {
+    margin: 15px;
+}
+
+/* Hide/rearrange for smaller screens */
+@media screen and (max-width: 767px) {
+    /* Hide captions */
+    .carousel-caption {
+        display: none;
+    }
+}

@@ -1,0 +1,198 @@
+﻿@model CategoryListViewModel
+@{
+    ViewData["Title"] = $"Search {@Model.Search}";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<div class="panel-header">
+    <div class="header text-center">
+        <h2 class="title">Categories</h2>
+        <div id="modal-placeholder"></div>
+        <p class="category">
+            All Blog Post Categories!<br />
+            <button type="button" class="btn btn-primary"
+                    data-toggle="ajax-modal"
+                    data-target="#add-category"
+                    data-url="@Url.Action("Create", "Categories")">
+                Add Blog Post Category
+            </button>
+        </p>
+    </div>
+</div>
+
+
+@if (!Model.PagingCategories.Any())
+{
+    <div class="content">
+        <div class="row mt-2">
+            <div class="col-md-12">
+                <div class="card card-tasks">
+                    <div class="card-header">
+                        <h4 class="card-title text-center">Search Results for @Model.Search is @Model.PagingCategories.TotalItemCount items</h4>
+                        <p class="card-text text-center">
+                            <a asp-action="Index" asp-controller="Categories" class="btn btn-outline-primary btn-round">
+                                <i class="now-ui-icons arrows-1_minimal-left"></i>&nbsp;&nbsp; Go Back
+                            </a>
+                        </p>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-4">
+                            <div class="col-md-8 ml-auto mr-auto">
+                                <form asp-action="Search" asp-controller="Categories" class="form" method="post">
+                                    <div class="input-group">
+                                        <input asp-for="Search" autocomplete="on" class="form-control" placeholder="Search Categories...." />
+                                        <div class="input-group-append">
+                                            <button type="submit" class="input-group-text">
+                                                <i class="now-ui-icons ui-1_zoom-bold"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-10 ml-auto mr-auto">
+                                <div class="alert alert-danger alert-with-icon" data-notify="container">
+                                    <span data-notify="icon" class="now-ui-icons objects_support-17"></span>
+                                    <span data-notify="message">Agghhh.. Sorry There are no categories That match @Model.Search</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="content">
+        <div class="row mt-2">
+            <div class="col-md-12">
+                <div class="card card-tasks">
+                    <div class="card-header">
+                        <h4 class="card-title text-center">Search Results for @Model.Search is @Model.PagingCategories.TotalItemCount</h4>
+                        <p class="card-text text-center">
+                            <a asp-action="Index" asp-controller="Categories" class="btn btn-outline-primary btn-round">
+                                <i class="now-ui-icons arrows-1_minimal-left"></i>&nbsp;&nbsp; Go Back
+                            </a>
+                        </p>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-4">
+                            <div class="col-md-8 ml-auto mr-auto">
+                                <form asp-action="Search" asp-controller="Categories" asp-route-search="@Model.Search" class="form" method="post">
+                                    <div class="input-group">
+                                        <input asp-for="Search" autocomplete="on" class="form-control" placeholder="Search Categories...." />
+                                        <div class="input-group-append">
+                                            <button type="submit" class="input-group-text">
+                                                <i class="now-ui-icons ui-1_zoom-bold"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="table-full-width table-responsive">
+                            <table class="table">
+                                <thead class="text-primary">
+                                    <tr>
+                                        <th>
+                                            Category ID
+                                        </th>
+                                        <th>
+                                            Name
+                                        </th>
+                                        <th class="text-right">
+                                            Actions
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var cat in Model.PagingCategories)
+                                    {
+                                        var Url = $"/Categories/Remove/{cat.Id}";
+                                        <tr>
+                                            <td>@cat.Id</td>
+                                            <td class="text-left">@cat.Name</td>
+                                            <td class="td-actions text-right">
+                                                <a asp-action="Edit" asp-controller="Categories" asp-route-id="@cat.Id" rel="tooltip" title="Modify Category" class="btn btn-info btn-round btn-icon btn-icon-mini btn-neutral" data-original-title="Modify Category">
+                                                    <i class="now-ui-icons ui-2_settings-90"></i>
+                                                </a>
+                                                <a title="Remove Category" onclick="Delete('@Url')"
+                                                   class="delete"
+                                                   data-original-title="Delete Category">
+                                                    <i class="now-ui-icons ui-1_simple-remove"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="row justify-content-center mb-3 mt-3">
+                                <pager list="@Model.PagingCategories"
+                                       options="@PagedListRenderOptions.TwitterBootstrapPager4"
+                                       asp-action="Search"
+                                       asp-controller="Categories">
+                                </pager>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts{
+    <script type="text/javascript">
+
+        function Delete(url) {
+            var Url = url;
+            var redirectUrl="/Categories/Index";
+            var target;
+            $('body').append(`
+                        <div class="modal fade modal-mini modal-primary" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                             <div class="modal-content">
+                              <div class="modal-header justify-content-center">
+                                <div class="modal-profile">
+                                  <i class="now-ui-icons ui-1_simple-remove"></i>
+                                </div>
+                              </div>
+                            <div class="modal-body delete-modal-body">
+                                <h5 class="text-center">Are you Sure You want to delete this Item</h5>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal" id="cancel-delete">Cancel</button>
+                                <button type="button" class="btn btn-danger" id="confirm-delete">Delete</button>
+                            </div>
+                            </div>
+                        </div>
+                        </div>`);
+            $("#deleteModal").modal('show');
+            $("#confirm-delete").on('click', (e) => {
+                target = e.target;
+                $.post(Url)
+                    .done((result) => {
+                        if (!redirectUrl) {
+                           $(target).parent().parent().fadeOut(function () {
+                                $(this).remove();
+                           })
+                        }
+                        window.location.href = redirectUrl;
+                    })
+                    .fail((error) => {
+                        if (redirectUrl)
+                            window.location.href = redirectUrl;
+                    }).always(() => {
+                        $("#deleteModal").modal('hide');
+                    });
+            });
+        }
+    </script>
+}

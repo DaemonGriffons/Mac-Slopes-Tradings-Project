@@ -1,0 +1,84 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="wwwroot\lib\bootbox\**" />
+    <Compile Remove="wwwroot\lib\bootstrap-switch\**" />
+    <Compile Remove="wwwroot\lib\CkEditor\adapters\**" />
+    <Compile Remove="wwwroot\lib\CkEditor\lang\**" />
+    <Compile Remove="wwwroot\lib\CkEditor\plugins\**" />
+    <Compile Remove="wwwroot\lib\CkEditor\samples\**" />
+    <Compile Remove="wwwroot\lib\CkEditor\skins\**" />
+    <Compile Remove="wwwroot\lib\easy-autocomplete\**" />
+    <Content Remove="wwwroot\lib\bootbox\**" />
+    <Content Remove="wwwroot\lib\bootstrap-switch\**" />
+    <Content Remove="wwwroot\lib\CkEditor\adapters\**" />
+    <Content Remove="wwwroot\lib\CkEditor\lang\**" />
+    <Content Remove="wwwroot\lib\CkEditor\plugins\**" />
+    <Content Remove="wwwroot\lib\CkEditor\samples\**" />
+    <Content Remove="wwwroot\lib\CkEditor\skins\**" />
+    <Content Remove="wwwroot\lib\easy-autocomplete\**" />
+    <EmbeddedResource Remove="wwwroot\lib\bootbox\**" />
+    <EmbeddedResource Remove="wwwroot\lib\bootstrap-switch\**" />
+    <EmbeddedResource Remove="wwwroot\lib\CkEditor\adapters\**" />
+    <EmbeddedResource Remove="wwwroot\lib\CkEditor\lang\**" />
+    <EmbeddedResource Remove="wwwroot\lib\CkEditor\plugins\**" />
+    <EmbeddedResource Remove="wwwroot\lib\CkEditor\samples\**" />
+    <EmbeddedResource Remove="wwwroot\lib\CkEditor\skins\**" />
+    <EmbeddedResource Remove="wwwroot\lib\easy-autocomplete\**" />
+    <None Remove="wwwroot\lib\bootbox\**" />
+    <None Remove="wwwroot\lib\bootstrap-switch\**" />
+    <None Remove="wwwroot\lib\CkEditor\adapters\**" />
+    <None Remove="wwwroot\lib\CkEditor\lang\**" />
+    <None Remove="wwwroot\lib\CkEditor\plugins\**" />
+    <None Remove="wwwroot\lib\CkEditor\samples\**" />
+    <None Remove="wwwroot\lib\CkEditor\skins\**" />
+    <None Remove="wwwroot\lib\easy-autocomplete\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BuildBundlerMinifier" Version="2.9.406" />
+    <PackageReference Include="ClientNotifications" Version="1.17.1" />
+    <PackageReference Include="LigerShark.WebOptimizer.Core" Version="1.0.236" />
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="2.1.6" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.1.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.1.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.9" />
+    <PackageReference Include="NWebsec.AspNetCore.Middleware" Version="2.0.0" />
+    <PackageReference Include="PagedList.Core.Mvc" Version="1.2.0" />
+    <PackageReference Include="PhotoSauce.MagicScaler" Version="0.9.1" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.1.4" />
+    <PackageReference Include="Sendgrid" Version="9.11.0" />
+    <PackageReference Include="WebEssentials.AspNetCore.CdnTagHelpers" Version="1.0.16" />
+    <PackageReference Include="WebEssentials.AspNetCore.OutputCaching" Version="1.0.16" />
+    <PackageReference Include="WebEssentials.AspNetCore.PWA" Version="1.0.49" />
+    <PackageReference Include="WebEssentials.AspNetCore.ServiceWorker" Version="1.0.11" />
+    <PackageReference Include="WebEssentials.AspNetCore.StaticFilesWithCache" Version="1.0.1" />
+    <PackageReference Include="WebMarkupMin.AspNetCore2" Version="2.5.0" />
+    <PackageReference Include="WebMarkupMin.Brotli" Version="1.0.3" />
+    <PackageReference Include="WebMarkupMin.NUglify" Version="2.2.0" />
+    <PackageReference Include="WilderMinds.MetaWeblog" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\lib\bootstrap\" />
+    <Folder Include="wwwroot\lib\jquery\" />
+    <Folder Include="wwwroot\lib\font-awesome\" />
+    <Folder Include="wwwroot\lib\qrCode\" />
+    <Folder Include="wwwroot\lib\toastr\" />
+    <Folder Include="wwwroot\lib\popper\" />
+    <Folder Include="wwwroot\lib\signalR\" />
+    <Folder Include="wwwroot\lib\select2js\" />
+  </ItemGroup>
+
+</Project>

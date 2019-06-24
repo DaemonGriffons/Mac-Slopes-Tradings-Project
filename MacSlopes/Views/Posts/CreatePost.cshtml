@@ -1,0 +1,122 @@
+﻿@model PostCreateViewModel
+@{
+    ViewData["Title"] = "Create New Blog Post";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@section Styles{
+    <link href="~/lib/CkEditor/ckeditor/contents.css" rel="stylesheet" />
+}
+<div class="panel-header">
+    <div class="header text-center">
+        <h2 class="title">Blog Post</h2>
+        <p class="category">
+            @ViewData["Title"]<br />
+            <a class="btn btn-primary" asp-action="Index" asp-controller="Posts">
+                Go Back To All Blog Posts
+            </a>
+        </p>
+
+    </div>
+</div>
+
+<div class="content">
+    <div class="row mt-2">
+        <div class="col-md-12">
+            <div class="card card-tasks">
+                <div class="card-body">
+                    <form class="form" enctype="multipart/form-data" asp-action="CreatePost">
+                        <div class="row mb-2">
+                            <div class="col-md-12">
+                                <div class="input-group">
+                                    <input asp-for="Title" placeholder="Enter Post Title..." class="form-control" />
+                                    <div class="input-group-append">
+                                        <div class="input-group-text">
+                                            <i class="now-ui-icons files_paper"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span asp-validation-for="Title" class="text-primary"></span>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    <input asp-for="Image" placeholder="Upload Post Banner/Image" class="form-control" />
+                                    <div class="input-group-append">
+                                        <div class="input-group-text">
+                                            <i class="now-ui-icons files_single-copy-04"></i>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <span asp-validation-for="Image" class="text-primary"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    <select asp-for="tag" class="form-control" asp-items="@ViewBag.Categories"></select>
+                                    <div class="input-group-append">
+                                        <div class="input-group-text">
+                                            <i class="now-ui-icons gestures_tap-01"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span asp-validation-for="tag" class="text-primary"></span>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-md-12">
+                                <div class="input-group">
+                                    <textarea asp-for="Description" rows="5" placeholder="Enter Blog Post Description Here ..." class="form-control"></textarea>
+                                </div>
+                                <span asp-validation-for="Description" class="text-primary"></span>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-md-12">
+                                <div class="input-group">
+                                    <textarea id="BlogBody" style="width:100% !important;" rows="30" asp-for="Body" class="form-control">
+                                    </textarea>
+                                </div>
+                                <span asp-validation-for="Body" class="text-primary"></span>
+                            </div>
+
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-md-12">
+                                <div class="form-check">
+                                    <label class="form-check-label text-primary" asp-for="Publish">
+                                        <input asp-for="Publish" class="form-check-input" />
+                                        <span class="form-check-sign"></span>
+                                        @Html.DisplayNameFor(x => x.Publish)
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button type="submit" class="btn btn-block btn-lg btn-primary btn-round">
+                                    <i class="now-ui-icons ui-2_chat-round"></i>&nbsp;&nbsp;Create New Blog Post
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/lib/CkEditor/ckeditor/ckeditor.js"></script>
+    <script src="~/lib/CkEditor/ckeditor/config.js"></script>
+    <script>
+        $(document).ready(function () {
+            CKEDITOR.replace('BlogBody',
+                {
+                    height: 450
+                });
+        });
+    </script>
+    <partial name="_ValidationScriptsPartial" />
+}

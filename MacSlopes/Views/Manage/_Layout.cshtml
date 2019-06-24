@@ -1,0 +1,28 @@
+﻿
+@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+<section class="section section-manage mb-4">
+    <div class="container">
+        <div class="row justify-content-center align-content-center">
+            <h2 class="font-weight-bold text-center">Manage Your Account</h2>
+        </div>
+    </div>
+</section>
+<div class="container">
+    <div class="row">
+        <div class="card card-plain">
+            <div class="card-header">
+                @await Html.PartialAsync("_ManageNav")
+            </div>
+            <div class="card-body">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @RenderSection("Scripts", required: false)
+}
+

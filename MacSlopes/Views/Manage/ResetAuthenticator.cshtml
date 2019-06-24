@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewData["Title"] = "Reset authenticator key";
+    ViewData.AddActivePage(ManageNavPages.TwoFactorAuthentication);
+}
+
+
+<div class="col-lg-6 col-md-6 ml-auto mr-auto">
+    <div class="row justify-content-center align-content-center">
+        <div class="col-md-12">
+            <div class="alert alert-danger" role="alert">
+                <div class="container">
+                    <div class="alert-icon">
+                        <i class="now-ui-icons ui-1_simple-remove"></i>
+                    </div>
+                    <strong>If you reset your authenticator key your authenticator app will not work until you reconfigure it.</strong>
+                    This process disables 2FA until you verify your authenticator app and will also reset your 2FA recovery codes.
+                    If you do not complete your authenticator app configuration you may lose access to your account.
+                </div>
+            </div>
+
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                <form asp-action="ResetAuthenticator" asp-controller="Manage" class="form">
+                    <button type="submit" class="btn btn-block btn-lg btn-primary btn-round">Reset authenticator key</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

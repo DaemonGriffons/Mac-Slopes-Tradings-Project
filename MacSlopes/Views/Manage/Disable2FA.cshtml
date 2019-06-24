@@ -1,0 +1,28 @@
+﻿
+@{
+    ViewData["Title"] = "Disable Two-Factor Authentication";
+    Layout = "_Layout";
+    ViewData.AddActivePage(ManageNavPages.TwoFactorAuthentication);
+}
+
+
+<div class="col-lg-6 col-md-6 ml-auto mr-auto mt-4">
+    <div class="alert alert-warning" role="alert">
+        <div class="container">
+            <div class="alert-icon">
+                <i class="now-ui-icons objects_support-17"></i>
+            </div>
+            <strong>This action only disables 2-Factor Auth</strong>
+            Disabling 2FA does not change the keys used in authenticator apps. If you wish to change the key
+            used in an authenticator app you should <a asp-action="ResetAuthenticatorWarning">reset your
+                authenticator keys.</a>
+        </div>
+    </div>
+    <div class="justify-content-center">
+        <form asp-action="Disable2FA" asp-controller="Manage" class="form" method="post">
+            <button class="btn btn-lg btn-block btn-primary" type="submit">Disable 2FA</button>
+        </form>
+    </div>
+
+</div>
+

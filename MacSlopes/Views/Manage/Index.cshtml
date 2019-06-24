@@ -1,0 +1,57 @@
+﻿@using MacSlopes.Views.Manage
+@model IndexViewModel
+@{
+    ViewData["Title"] = "Profile";
+    Layout = "_Layout";
+    ViewData.AddActivePage(ManageNavPages.Index);
+}
+
+<div class=" col-lg-6 col-md-6 ml-auto mr-auto mt-4">
+    <form class="form" asp-action="Index" asp-controller="Manage">
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <div class="input-group-text"><i class="now-ui-icons users_single-02"></i></div>
+            </div>
+            <input asp-for="Username" class="form-control" disabled>
+        </div>
+        @if (Model.IsEmailConfirmed)
+        {
+            <div class="input-group has-success">
+                <div class="input-group-prepend">
+                    <div class="input-group-text"><i class="now-ui-icons ui-1_check"></i></div>
+                </div>
+                <input asp-for="Email" class="form-control form-control-success">
+            </div>
+        }
+        else
+        {
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text"><i class="now-ui-icons ui-1_email-85"></i></div>
+                </div>
+                <input asp-for="Email" class="form-control" />
+            </div>
+            <button type="submit" class="btn btn-link btn-info text-info text-center">Send Verification Email</button>
+        }
+        <span asp-validation-for="Email" class="text-danger"></span>
+
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <div class="input-group-text">
+                    <i class="now-ui-icons tech_mobile"></i>
+                </div>
+            </div>
+            <input asp-for="PhoneNumber" class="form-control" placeholder="Enter Phone number..." />
+        </div>
+        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+
+        <div class="form-group mt-4">
+            <button type="submit" class="btn btn-block btn-lg btn-primary btn-round">Update Profile</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}
+

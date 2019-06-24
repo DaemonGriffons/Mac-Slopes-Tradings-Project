@@ -1,0 +1,106 @@
+﻿@model RegisterViewModel
+@{
+    ViewData["Title"] = "Sign Up";
+}
+
+<div class="page-header clear-filter">
+    <div class="page-header-image">
+    </div>
+    <div class="content">
+        <div class="container">
+            <div class="col-md-5 ml-auto mr-auto">
+                <div class="card card-signup" data-background-color="orange">
+                    <form class="form" asp-action="Register" asp-controller="Account">
+                        <div class="card-header text-center">
+                            <h3 class="card-title title-signup">@ViewData["Title"]</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="input-group no-border input-lg">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="fa fa-user-o" style="color:ghostwhite !important;"></i>
+                                    </span>
+                                </div>
+                                <input asp-for="Name" placeholder="Enter First Name..." class="form-control" />
+                            </div>
+                            <span asp-validation-for="Name" class="text-white"></span>
+                            <div class="input-group no-border input-lg">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="fa fa-user-o" style="color:ghostwhite !important;"></i>
+                                    </span>
+                                </div>
+                                <input asp-for="Surname" placeholder="Enter Surname..." class="form-control" />
+                            </div>
+                            <span asp-validation-for="Surname" class="text-white"></span>
+                            <div class="input-group no-border input-lg">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="fa fa-user-circle-o" style="color:ghostwhite !important;"></i>
+                                    </span>
+                                </div>
+                                <input asp-for="Username" placeholder="Enter Username..." class="form-control" />
+                            </div>
+                            <span asp-validation-for="Username" class="text-white"></span>
+                            <div class="input-group no-border input-lg">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="fa fa-envelope-o" style="color:ghostwhite !important;"></i>
+                                    </span>
+                                </div>
+                                <input asp-for="Email" placeholder="Enter Email..." class="form-control" />
+                            </div>
+                            <span asp-validation-for="Email" class="text-white"></span>
+                            <div class="input-group no-border input-lg">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="fa fa-phone" style="color:ghostwhite !important;"></i>
+                                    </span>
+                                </div>
+                                <input asp-for="Phone" placeholder="Enter Phone number..." class="form-control" />
+                            </div>
+                            <span asp-validation-for="Phone" class="text-white"></span>
+                            <div class="input-group no-border input-lg">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="fa fa-lock" style="color:ghostwhite !important;"></i>
+                                    </span>
+                                </div>
+                                <input asp-for="Password" placeholder="Enter Password..." class="form-control" />
+                            </div>
+                            <span asp-validation-for="Password" class="text-white"></span>
+                            <div class="input-group no-border input-lg">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="fa fa-lock" style="color:ghostwhite !important;"></i>
+                                    </span>
+                                </div>
+                                <input asp-for="ConfirmPassword" placeholder="Confirm Your Password..." class="form-control" />
+                            </div>
+                            <span asp-validation-for="ConfirmPassword" class="text-white"></span>
+                        </div>
+                        <div class="card-footer text-center">
+                            <button class="btn btn-neutral btn-round btn-lg btn-block">Sign Up</button>
+                            <div class="pull-left">
+                                <h6>
+                                    <a asp-action="Login" asp-controller="Account" class="link">Have An Account?</a>
+                                </h6>
+                            </div>
+                            <div class="pull-right">
+                                <h6>
+                                    <a asp-action="ForgotPassword" asp-controller="Account" class="link">Forgot Password?</a>
+                                </h6>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}
+
+

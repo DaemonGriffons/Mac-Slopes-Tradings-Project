@@ -1,0 +1,51 @@
+﻿@model Login2FAViewModel
+@{
+    ViewData["Title"] = "Two-Factor Authentication";
+}
+
+<div class="page-header clear-filter">
+    <div class="page-header-image"></div>
+    <div class="content">
+        <div class="container">
+            <div class="col-lg-5 col-md-4 mr-auto ml-auto">
+                <div class="card card-signup" data-background-color="orange">
+                    <form class="form" asp-action="Login2Factor" asp-controller="Account" asp-route-returnUrl="@ViewData["returnUrl"]">
+                        <div class="card-header text-center">
+                            <h2 class="card-title title-signup">@ViewData["Title"]</h2>
+                            <p class="card-text">Your Sign In Is Protected With An Authenticator App. Enter  Your Authentication code Below</p>
+                        </div>
+                        <div class="card-body">
+                            <input asp-for="RememberMe" type="hidden" />
+                            <div class="input-group no-border input-lg">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="now-ui-icons ui-1_email-85"></i>
+                                    </span>
+                                </div>
+                                <input asp-for="TwoFactorCode" autocomplete="off" placeholder="Enter 2-Factor Auth Code..." class="form-control" />
+                            </div>
+                            <span asp-validation-for="TwoFactorCode" class="text-white"></span>
+                            <div class="form-check">
+                                <label asp-for="RememberMachine" class="form-check-label">
+                                    <input asp-for="RememberMachine" class="form-check-input"/>
+                                    <span class="form-check-sign"></span>
+                                    @Html.DisplayNameFor(x => x.RememberMachine)
+                                </label>
+                            </div>
+                        </div>
+                        <div class="card-footer text-center">
+                            <button class="btn btn-neutral btn-round btn-lg btn-block">Sign In</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}
