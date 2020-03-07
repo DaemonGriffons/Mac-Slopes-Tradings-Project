@@ -7,33 +7,49 @@ using ClientNotifications.Helpers;
 using MacSlopes.Entities;
 using MacSlopes.Models.CategoryViewModels;
 using MacSlopes.Services.Abstract;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using PagedList.Core;
+using Remotion.Linq.Parsing.Structure.IntermediateModel;
 
 namespace MacSlopes.Controllers
 {
-    [Authorize(Roles ="Admin,SuperUser")]
     public class CategoriesController : Controller
     {
-        private readonly ICategoryReporitory _repository;
+        private readonly ICategoryReporitory _reporitory;
         private readonly IClientNotification _clientNotification;
+        private readonly IMemoryCache _memoryCache;
 
-        public CategoriesController(ICategoryReporitory repository,IClientNotification clientNotification)
+        public CategoriesController(ICategoryReporitory reporitory, IClientNotification clientNotification, IMemoryCache memoryCache)
         {
-            _repository = repository;
+            _reporitory = reporitory;
             _clientNotification = clientNotification;
+            _memoryCache = memoryCache;
         }
-
         [HttpGet]
         public IActionResult Index(int? page)
         {
             var pageNumber = page == null || page <= 0 ? 1 : page.Value;
-            var categories = _repository.GetCategories().Select(x => new CategoryIndexViewModel
+
+            var categories = _reporitory.GetCategories().Select(category => new CategoryIndexViewModel
             {
-                Id = x.Id,
-                Name = x.Name
+                Id = category.Id,
+                Name = category.Name
             });
+
+            if(!_memoryCache.TryGetValue("categories", out categories))
+            {
+                if (categories == null)
+                {
+                    categories = _reporitory.GetCategories().Select(category => new CategoryIndexViewModel
+                    {
+                        Id = category.Id,
+                        Name = category.Name
+                    });
+                }
+
+                _memoryCache.Set("categories", categories);
+            }
 
             var model = new CategoryListViewModel
             {
@@ -43,72 +59,47 @@ namespace MacSlopes.Controllers
         }
 
         [HttpGet]
-        public IActionResult Search() => View();
+        public IActionResult Create() => View();
 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("/Categories/Search/{search}/{page:int?}")]
-        public IActionResult Search(string Search, [FromRoute]int? page)
+        public async Task<IActionResult> Create(CategoryCreateViewModel model)
         {
-            var pageNumber = page == null || page <= 0 ? 1 : page.Value;
-            if (String.IsNullOrWhiteSpace(Search))
+            if (!ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Index));
+                _clientNotification.AddToastNotification("You Have Made Errors", NotificationHelper.NotificationType.error, new ToastNotificationOption
+                {
+                    PositionClass = "toast-top-right",
+                    NewestOnTop = true,
+                    PreventDuplicates = true
+                });
+                return View(model);
             }
-            var results = _repository.Search(Search).Select(x => new CategoryIndexViewModel
+
+            var category = new Category
             {
-                Id = x.Id,
-                Name = x.Name
-            });
-            var model = new CategoryListViewModel
-            {
-                Search = Search,
-                PagingCategories = new PagedList<CategoryIndexViewModel>(results, pageNumber, 10)
+                Name = model.Name
             };
-            return View(model);
-        }
-
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(string CategoryCreate)
-        {
-            if (String.IsNullOrWhiteSpace(CategoryCreate))
-            {
-                return RedirectToAction(nameof(Index));
-            }
-
-            if (_repository.VerifyName(CategoryCreate))
-            {
-                ModelState.AddModelError("Error","Category name already exists");
-                return RedirectToAction(nameof(Index));
-            }
-            var model = new Category
-            {
-                Id = Guid.NewGuid().ToString().Replace("-", string.Empty).ToLowerInvariant(),
-                Name = CategoryCreate
-            };
-
-            _repository.AddCategory(model);
-            await _repository.SaveChangesAsync();
+            _reporitory.AddCategory(category);
+            await _reporitory.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         [HttpGet]
-        public IActionResult Edit(string id)
+        [ResponseCache(Location = ResponseCacheLocation.Client, NoStore = false)]
+        public IActionResult Edit(string Id)
         {
-            var category = _repository.GetCategory(id);
-            if(category is null)
+            var category = _reporitory.GetCategory(Id);
+            if (category == null)
             {
                 return RedirectToAction(nameof(Index));
             }
-            var model = new CategoryIndexViewModel()
+            var model = new CategoryIndexViewModel
             {
                 Id = category.Id,
                 Name = category.Name
             };
-
             return View(model);
         }
 
@@ -116,52 +107,72 @@ namespace MacSlopes.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(CategoryIndexViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var category = new Category
+                _clientNotification.AddToastNotification("You Have Made Errors", NotificationHelper.NotificationType.error, new ToastNotificationOption
                 {
-                    Id = model.Id,
-                    Name = model.Name
-                };
-                _repository.UpdateCategory(category);
-                await _repository.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            _clientNotification.AddToastNotification("You Have Made Error", NotificationHelper.NotificationType.error,
-                new ToastNotificationOption
-                {
+                    PositionClass = "toast-top-right",
                     NewestOnTop = true,
-                    CloseButton = true,
-                    PositionClass = "toast-top-full-width",
                     PreventDuplicates = true
                 });
-            return View(model);
+                return View(model);
+            }
+
+            var category = new Category
+            {
+                Name = model.Name
+            };
+
+            _reporitory.UpdateCategory(category);
+            await _reporitory.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpPost]
-        public async Task<IActionResult> Remove(string id)
+        public async Task<IActionResult> Remove(string Id)
         {
-            try
+            var category = _reporitory.GetCategory(Id);
+            if (category == null)
             {
-                var category = _repository.GetCategory(id);
-                if(category is null)
-                {
-                    return NotFound();
-                }
-                _repository.DeleteCategory(category);
-                await _repository.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            catch (Exception)
-            {
-                return BadRequest();
-            }
+
+            _reporitory.DeleteCategory(category);
+            await _reporitory.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
-        [AcceptVerbs("GET", "POST")]
+
+        [HttpGet]
+        [Route("/Categories/Search")]
+        public IActionResult Search([FromQuery] string Search, [FromQuery] int? page)
+        {
+            if (String.IsNullOrWhiteSpace(Search))
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            var pageNumber = page == null || page <= 0 ? 1 : page.Value;
+
+            var categories = _reporitory.Search(Search).Select(category => new CategoryIndexViewModel
+            {
+                Id = category.Id,
+                Name = category.Name
+            });
+
+            ViewBag.Search = Search;
+            var model = new CategoryListViewModel
+            {
+                Search = Search,
+                PagingCategories = new PagedList<CategoryIndexViewModel>(categories, pageNumber, 10)
+            };
+            return View(model);
+        }
+
+
+        [HttpGet]
         public IActionResult ValidateCategory(string name)
         {
-            if (_repository.VerifyName(name))
+            if (_reporitory.VerifyName(name))
             {
                 return Json($"The category named {name} alrealdy exists.try another one");
             }

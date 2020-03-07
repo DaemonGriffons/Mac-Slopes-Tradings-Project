@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using MacSlopes.Entities;
+﻿using MacSlopes.Entities;
 using MacSlopes.Entities.Data;
 using MacSlopes.Services.Abstract;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MacSlopes.Services.Implementation
 {
@@ -17,7 +16,7 @@ namespace MacSlopes.Services.Implementation
             _context = context;
         }
         public IQueryable<Category> GetCategories()=>
-            _context.Categories;
+            _context.Categories.OrderBy(c=>c.Name);
 
         public Category GetCategory(string Id)=> 
             _context.Categories.SingleOrDefault(x => x.Id.Equals(Id,StringComparison.OrdinalIgnoreCase));

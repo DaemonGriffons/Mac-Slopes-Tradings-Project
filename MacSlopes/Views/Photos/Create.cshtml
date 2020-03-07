@@ -1,0 +1,118 @@
+﻿@model PhotoCreateViewModel
+@{
+    ViewData["Title"] = "Create Gallery Item";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<div class="panel-header">
+    <div class="header text-center">
+        <h2 class="title">Gallery Photo</h2>
+        <p class="category">
+            @ViewData["Title"]<br />
+            <a class="btn btn-primary" asp-action="Index" asp-controller="Photos">
+                Go Back To All Gallery Photos
+            </a>
+        </p>
+    </div>
+</div>
+
+<div class="content">
+    <div class="row mt-2">
+        <div class="card card-tasks">
+            <div class="card-body">
+                <form class="form" enctype="multipart/form-data" asp-controller="Photos" asp-action="Create">
+                    <div class="row my-3">
+                        <div class="col-md-6">
+                            <div class="input-group">
+                                <input asp-for="Name" class="form-control" placeholder="Enter Gallery Photo Name..." />
+                                <div class="input-group-append">
+                                    <div class="input-group-text">
+                                        <i class="now-ui-icons education_agenda-bookmark"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <span class="text-primary" asp-validation-for="Name"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <select asp-for="Category" asp-items="@Model.Categories" class="selectpicker" data-style="select-with-transition" title="Select Category" data-size="7">
+                                >
+                                <option disabled="disabled">Please Select Gallery Item Category</option>
+                            </select>
+                            <span class="text-primary" asp-validation-for="Category"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="input-group">
+                                <input asp-for="Image" class="form-control" placeholder="Upload Image..."/>
+                                <div class="input-group-append">
+                                    <div class="input-group-text">
+                                        <i class="now-ui-icons files_single-copy-04"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <span asp-validation-for="Image" class="text-primary"></span>
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <textarea asp-for="Description" placeholder="Enter Gallery Item Desciption Here..." class="form-control" rows="2"></textarea>
+                                <span asp-validation-for="Description" class="text-primary"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row my-3">
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <input asp-for="FacebookLink" class="form-control" placeholder="Enter the Facebook Handle..." />
+                                <div class="input-group-append">
+                                    <div class="input-group-text">
+                                        <i class="fa fa-facebook-official"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <span asp-validation-for="FacebookLink" class="text-primary"></span>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <input asp-for="InstagramLink" class="form-control" placeholder="Enter the Instagram Handle..." />
+                                <div class="input-group-append">
+                                    <div class="input-group-text">
+                                        <i class="fa fa-instagram"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <span asp-validation-for="InstagramLink" class="text-primary"></span>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <input asp-for="TwitterLink" class="form-control" placeholder="Enter the Twitter Handle..." />
+                                <div class="input-group-append">
+                                    <div class="input-group-text">
+                                        <i class="fa fa-twitter-square"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <span asp-validation-for="TwitterLink" class="text-primary"></span>
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-md-10 mx-auto">
+                            <button type="submit" class="btn btn-block btn-lg btn-primary btn-round">
+                                <i class="now-ui-icons arrows-1_cloud-upload-94"></i>&nbsp;&nbsp;Create A new Gallery Item
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/lib/nowui-dashboard/js/bootstrap-selectpicker.js"></script>
+    <partial name="_ValidationScriptsPartial" />
+}

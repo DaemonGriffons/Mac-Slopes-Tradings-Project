@@ -1,0 +1,90 @@
+﻿@model PhotosListViewModel
+@{
+    ViewData["Title"] = "Search for: " + Model.Search;
+    ViewBag.Description = "Search Results for the search query: " + Model.Search;
+}
+
+<div class="wrapper">
+    <div class="page-header page-header-mini">
+        <div class="page-header-image" data-parallax="true"></div>
+        <div class="content-center">
+            <div class="container">
+                <h2 class="category">@ViewBag.Description</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="main">
+    <div class="container">
+        <div class="row justify-content-center my-5">
+            <div class="col-md-10 mx-auto">
+                <form class="form" asp-controller="Gallery" asp-route-Search="@Model.Search" asp-action="Search" method="GET">
+                    <div class="input-group">
+                        <input asp-for="Search" autocomplete="off" class="form-control" placeholder="Search For Our Work...." />
+                        <div class="input-group-append">
+                            <button type="submit" class="input-group-text">
+                                <i class="now-ui-icons ui-1_zoom-bold"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        @if (!Model.Photos.Any())
+        {
+            <div class="row">
+                <div class="col-md-10 mx-auto">
+                    <div class="alert alert-danger" role="alert">
+                        <div class="container">
+                            <div class="alert-icon">
+                                <i class="now-ui-icons objects_support-17"></i>
+                            </div>
+                            <strong>Arrggh Sorry</strong> We Couldn't find what you are looking for. Try To be more specific...
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        }
+        else
+        {
+            <div class="row">
+                <div class="col-md-10 mx-auto">
+                    @foreach (var photo in Model.Photos)
+                    {
+                        var src = $"/api/Images/{photo.PhotoUrl}";
+                        <div class="card card-plain card-blog">
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <div class="card-image">
+                                        <img src="@src" class="img img-raised rounded" />
+                                    </div>
+                                </div>
+                                <div class="col-md-7">
+                                    <h6 class="category text-primary mt-3">@photo.Category</h6>
+                                    <h3 class="card-title">
+                                        @photo.Name
+                                    </h3>
+                                    <p class="card-description">
+                                        @photo.Description
+                                    </p>
+                                    <p class="author">
+                                        <i class="now-ui-icons tech_watch-time"></i> @photo.DateCreated
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="row justify-content-center my-4">
+                <pager asp-action="Search" asp-controller="Gallery"
+                       asp-route-Search="@Model.Search"
+                       list="@Model.Photos"
+                       options="@PagedListRenderOptions.TwitterBootstrapPager4"></pager>
+            </div>
+        }
+    </div>
+</div>

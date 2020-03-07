@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace MacSlopes.Entities.Data
 {
@@ -28,37 +27,60 @@ namespace MacSlopes.Entities.Data
             {
                 new Category
                 {
-                    Id=Guid.NewGuid().ToString().Replace("-",string.Empty).ToLowerInvariant(),
                     Name="Programming"
                 },
                 new Category
                 {
-                    Id=Guid.NewGuid().ToString().Replace("-",string.Empty).ToLowerInvariant(),
+
                     Name="Security"
                 },
                 new Category
                 {
-                    Id=Guid.NewGuid().ToString().Replace("-",string.Empty).ToLowerInvariant(),
                     Name="Blogging"
                 },
                 new Category
                 {
-                    Id=Guid.NewGuid().ToString().Replace("-",string.Empty).ToLowerInvariant(),
                     Name="Ethical Hacking"
                 },
                 new Category
                 {
-                    Id=Guid.NewGuid().ToString().Replace("-",string.Empty).ToLowerInvariant(),
                     Name="Anonymous"
                 },
                 new Category
                 {
-                    Id=Guid.NewGuid().ToString().Replace("-",string.Empty).ToLowerInvariant(),
                     Name="Technology"
                 },
                 new Category
                 {
-                    Id=Guid.NewGuid().ToString().Replace("-",string.Empty).ToLowerInvariant(),
+                    Name="Finance"
+                },
+                new Category
+                {
+                    Name="Programming"
+                },
+                new Category
+                {
+
+                    Name="Security"
+                },
+                new Category
+                {
+                    Name="Blogging"
+                },
+                new Category
+                {
+                    Name="Ethical Hacking"
+                },
+                new Category
+                {
+                    Name="Anonymous"
+                },
+                new Category
+                {
+                    Name="Technology"
+                },
+                new Category
+                {
                     Name="Finance"
                 },
             };
@@ -91,6 +113,170 @@ namespace MacSlopes.Entities.Data
                 userManager.AddToRoleAsync(adminUser, AdminRole.Name).GetAwaiter().GetResult();
             }
 
+            //var photos = new List<Photo>()
+            //{
+            //    new Photo
+            //    {
+            //        Id=Guid.NewGuid().ToString().Replace("-",string.Empty),
+            //        Name="Creative Designs",
+            //        Description="This is a graphics design group that is based in polokwane with products ranging from logo design to interior design and decor",
+            //        Category="Beauty",
+            //        PhotoUrl="mac_slopes_trading_img_05072019230808.jpg",
+            //        FaceBookLink="Creative_Designz_za",
+            //        InstagramLink="Creative_Designz_za",
+            //        TwitterLink="Creative_Designz_za",
+            //    },
+            //    new Photo
+            //    {
+            //        Id=Guid.NewGuid().ToString().Replace("-",string.Empty),
+            //        Name="Creative Designs",
+            //        Description="This is a graphics design group that is based in polokwane with products ranging from logo design to interior design and decor",
+            //        Category="Beauty",
+            //        PhotoUrl="mac_slopes_trading_img_05072019230808.jpg",
+            //        FaceBookLink="Creative_Designz_za",
+            //        InstagramLink="Creative_Designz_za",
+            //        TwitterLink="Creative_Designz_za",
+            //    },
+            //    new Photo
+            //    {
+            //        Id=Guid.NewGuid().ToString().Replace("-",string.Empty),
+            //        Name="Creative Designs",
+            //        Description="This is a graphics design group that is based in polokwane with products ranging from logo design to interior design and decor",
+            //        Category="Beauty",
+            //        PhotoUrl="mac_slopes_trading_img_05072019230808.jpg",
+            //        FaceBookLink="Creative_Designz_za",
+            //        InstagramLink="Creative_Designz_za",
+            //        TwitterLink="Creative_Designz_za",
+            //    },
+            //    new Photo
+            //    {
+            //        Id=Guid.NewGuid().ToString().Replace("-",string.Empty),
+            //        Name="Creative Designs",
+            //        Description="This is a graphics design group that is based in polokwane with products ranging from logo design to interior design and decor",
+            //        Category="Beauty",
+            //        PhotoUrl="mac_slopes_trading_img_05072019230808.jpg",
+            //        FaceBookLink="Creative_Designz_za",
+            //        InstagramLink="Creative_Designz_za",
+            //        TwitterLink="Creative_Designz_za",
+            //    },
+            //    new Photo
+            //    {
+            //        Id=Guid.NewGuid().ToString().Replace("-",string.Empty),
+            //        Name="Creative Designs",
+            //        Description="This is a graphics design group that is based in polokwane with products ranging from logo design to interior design and decor",
+            //        Category="Beauty",
+            //        PhotoUrl="mac_slopes_trading_img_05072019230808.jpg",
+            //        FaceBookLink="Creative_Designz_za",
+            //        InstagramLink="Creative_Designz_za",
+            //        TwitterLink="Creative_Designz_za",
+            //    },
+            //    new Photo
+            //    {
+            //        Id=Guid.NewGuid().ToString().Replace("-",string.Empty),
+            //        Name="Creative Designs",
+            //        Description="This is a graphics design group that is based in polokwane with products ranging from logo design to interior design and decor",
+            //        Category="Beauty",
+            //        PhotoUrl="mac_slopes_trading_img_05072019230808.jpg",
+            //        FaceBookLink="Creative_Designz_za",
+            //        InstagramLink="Creative_Designz_za",
+            //        TwitterLink="Creative_Designz_za",
+            //    },
+            //    new Photo
+            //    {
+            //        Id=Guid.NewGuid().ToString().Replace("-",string.Empty),
+            //        Name="Creative Designs",
+            //        Description="This is a graphics design group that is based in polokwane with products ranging from logo design to interior design and decor",
+            //        Category="Beauty",
+            //        PhotoUrl="mac_slopes_trading_img_05072019230808.jpg",
+            //        FaceBookLink="Creative_Designz_za",
+            //        InstagramLink="Creative_Designz_za",
+            //        TwitterLink="Creative_Designz_za",
+            //    },
+            //    new Photo
+            //    {
+            //        Id=Guid.NewGuid().ToString().Replace("-",string.Empty),
+            //        Name="Creative Designs",
+            //        Description="This is a graphics design group that is based in polokwane with products ranging from logo design to interior design and decor",
+            //        Category="Beauty",
+            //        PhotoUrl="mac_slopes_trading_img_05072019230808.jpg",
+            //        FaceBookLink="Creative_Designz_za",
+            //        InstagramLink="Creative_Designz_za",
+            //        TwitterLink="Creative_Designz_za",
+            //    },
+            //    new Photo
+            //    {
+            //        Id=Guid.NewGuid().ToString().Replace("-",string.Empty),
+            //        Name="Creative Designs",
+            //        Description="This is a graphics design group that is based in polokwane with products ranging from logo design to interior design and decor",
+            //        Category="Beauty",
+            //        PhotoUrl="mac_slopes_trading_img_05072019230808.jpg",
+            //        FaceBookLink="Creative_Designz_za",
+            //        InstagramLink="Creative_Designz_za",
+            //        TwitterLink="Creative_Designz_za",
+            //    },
+            //    new Photo
+            //    {
+            //        Id=Guid.NewGuid().ToString().Replace("-",string.Empty),
+            //        Name="Creative Designs",
+            //        Description="This is a graphics design group that is based in polokwane with products ranging from logo design to interior design and decor",
+            //        Category="Beauty",
+            //        PhotoUrl="mac_slopes_trading_img_05072019230808.jpg",
+            //        FaceBookLink="Creative_Designz_za",
+            //        InstagramLink="Creative_Designz_za",
+            //        TwitterLink="Creative_Designz_za",
+            //    },
+            //    new Photo
+            //    {
+            //        Id=Guid.NewGuid().ToString().Replace("-",string.Empty),
+            //        Name="Creative Designs",
+            //        Description="This is a graphics design group that is based in polokwane with products ranging from logo design to interior design and decor",
+            //        Category="Beauty",
+            //        PhotoUrl="mac_slopes_trading_img_05072019230808.jpg",
+            //        FaceBookLink="Creative_Designz_za",
+            //        InstagramLink="Creative_Designz_za",
+            //        TwitterLink="Creative_Designz_za",
+            //    },
+            //    new Photo
+            //    {
+            //        Id=Guid.NewGuid().ToString().Replace("-",string.Empty),
+            //        Name="Creative Designs",
+            //        Description="This is a graphics design group that is based in polokwane with products ranging from logo design to interior design and decor",
+            //        Category="Beauty",
+            //        PhotoUrl="mac_slopes_trading_img_05072019230808.jpg",
+            //        FaceBookLink="Creative_Designz_za",
+            //        InstagramLink="Creative_Designz_za",
+            //        TwitterLink="Creative_Designz_za",
+            //    },
+            //    new Photo
+            //    {
+            //        Id=Guid.NewGuid().ToString().Replace("-",string.Empty),
+            //        Name="Creative Designs",
+            //        Description="This is a graphics design group that is based in polokwane with products ranging from logo design to interior design and decor",
+            //        Category="Beauty",
+            //        PhotoUrl="mac_slopes_trading_img_05072019230808.jpg",
+            //        FaceBookLink="Creative_Designz_za",
+            //        InstagramLink="Creative_Designz_za",
+            //        TwitterLink="Creative_Designz_za",
+            //    },
+
+            //};
+
+
+            if (!context.Photos.Any())
+            {
+                context.Photos.Add(new Photo
+                {
+                    Id = Guid.NewGuid().ToString().Replace("-", string.Empty),
+                    Name = "Creative Designs",
+                    Description = "This is a graphics design group that is based in polokwane with products ranging from logo design to interior design and decor",
+                    Category = "Beauty",
+                    PhotoUrl = "mac_slopes_trading_img_11072019182609.jpg",
+                    FaceBookLink = "Creative_Designz_za",
+                    InstagramLink = "Creative_Designz_za",
+                    TwitterLink = "Creative_Designz_za",
+                });
+                context.SaveChangesAsync().GetAwaiter().GetResult();
+            }
         }
     }
 }

@@ -1,0 +1,91 @@
+﻿@model UserDetailViewModel
+@{
+    ViewData["Title"] = $"{Model.Username} Details";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="panel-header">
+    <div class="header text-center">
+        <h2 class="title">User Details</h2>
+        <p class="category">
+            @ViewData["Title"]<br />
+            <a class="btn btn-primary" asp-action="Index" asp-controller="UserManagement">
+                Go Back To All Application Users
+            </a>
+        </p>
+    </div>
+</div>
+
+<div class="content">
+    <div class="row mt-3">
+        <div class="col-md-10 mx-auto">
+            <div class="card card-tasks">
+                <div class="card-body">
+                    <div class="row m-3">
+                        <div class="col-md-6">
+                            @if (!String.IsNullOrWhiteSpace(Model.ImageUrl))
+                            {
+                                var src = $"/api/Images/{Model.ImageUrl}";
+                                <img src="@src" class="img-fluid img-raised" alt="@Model.Username Profile Pic" />
+                            }
+                            else
+                            {
+                                <img src="~/images/anime3.png" class="img-fluid img-raised" alt="@Model.Username Profile Pic" />
+                            }
+                        </div>
+                        <div class="col-md-6">
+                            <h4 class="font-weight-bold text-info">@Model.Username</h4>
+                            <h6 class="card-category text-primary font-weight-bold mb-2">
+                                @Model.Name&nbsp;&nbsp;@Model.Surname
+                            </h6>
+                            @*<p class="card-text text-muted">
+                                    <br />
+                                    <br />
+
+                                </p>*@
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-sm-2">
+                                            <button type="button" class="btn btn-primary btn-fab btn-icon btn-round btn-neutral">
+                                                <i class="now-ui-icons ui-1_email-85"></i>
+                                            </button>
+                                        </div>
+                                        <div class="col-md-8 col-sm-8 mt-3">
+                                            <p class="text-muted">@Model.Email</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-sm-2">
+                                            <button type="button" class="btn btn-primary btn-fab btn-icon btn-round btn-neutral">
+                                                <i class="now-ui-icons tech_mobile"></i>
+                                            </button>
+                                        </div>
+                                        <div class="col-md-8 col-sm-8 mt-3">
+                                            <p class="text-muted">@Model.PhoneNumber</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-sm-2">
+                                            <button type="button" class="btn btn-primary btn-fab btn-icon btn-round btn-neutral">
+                                                <i class="now-ui-icons ui-1_calendar-60"></i>
+                                            </button>
+                                        </div>
+                                        <div class="col-md-8 col-sm-8 mt-3">
+                                            <p class="text-muted">@Model.DateRegistered</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

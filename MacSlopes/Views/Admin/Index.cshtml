@@ -1,0 +1,34 @@
+﻿
+@{
+    ViewData["Title"] = "Dashboard ";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="panel-header">
+    <div class="header text-center">
+        <h2 class="title">@ViewData["Title"]</h2>
+        <p class="category">
+            Welcome Back @User.Identity.Name
+        </p>
+    </div>
+</div>
+
+<div class="content">
+    <div class="col-md-12 col-lg-12">
+        <div class="card card-stats">
+            <div class="row">
+                <div class="col-md-3 col-lg-3">
+                    @await Component.InvokeAsync("UserComponent")
+                </div>
+                <div class="col-md-3 col-lg-3">
+                    @await Component.InvokeAsync("PostComponent")
+                </div>
+                <div class="col-md-3 col-lg-3">
+                    @await Component.InvokeAsync("PhotosComponent")
+                </div>
+                <div class="col-md-3 col-lg-3">
+                    @await Component.InvokeAsync("AdminCategoryComponent")
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

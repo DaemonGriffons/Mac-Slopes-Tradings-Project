@@ -1,9 +1,6 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
-using System.Linq;
-using System.Security.AccessControl;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 
 namespace MacSlopes.Models.PostsViewModel
 {
@@ -18,10 +15,10 @@ namespace MacSlopes.Models.PostsViewModel
         public string CurrentImage { get; set; }
 
         public IFormFile NewImage { get; set; }
-
-        public bool Publish { get; set; }
         public string Body { get; set; }
 
         public string CategoryId { get; set; }
+
+        public List<SelectListItem> Categories { get; set; }
     }
 }

@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using MacSlopes.Entities;
 using System.Linq;
 using System.Threading.Tasks;
-using MacSlopes.Entities;
 
 namespace MacSlopes.Services.Abstract
 {

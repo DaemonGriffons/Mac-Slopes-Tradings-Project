@@ -1,9 +1,7 @@
-﻿using System;
+﻿using MacSlopes.Entities;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-using MacSlopes.Entities;
 
 namespace MacSlopes.Models.PostsViewModel
 {
@@ -14,6 +12,10 @@ namespace MacSlopes.Models.PostsViewModel
 
         [Required]
         public string Author { get; set; }
+
+        public string AuthorImage { get; set; }
+
+        public string Slug { get; set; }
 
         [Required]
         [MaxLength(120)]
@@ -36,8 +38,9 @@ namespace MacSlopes.Models.PostsViewModel
         [Required]
         public DateTime DatePosted { get; set; }
 
-        public ICollection<MainComment> MainComments { get; set; }
+        public string Category { get; set; }
 
-        public IEnumerable<Category> Categories { get; set; }
+        public ICollection<Comment> Comments { get; set; }
+
     }
 }

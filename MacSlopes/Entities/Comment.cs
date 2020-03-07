@@ -17,14 +17,4 @@ namespace MacSlopes.Entities
 
         public string Message { get; set; }
     }
-
-    public class MainComment : Comment
-    {
-        public List<SubComment> SubComments { get; set; }
-        
-    }
-    public class SubComment : Comment
-    {
-        public int MainCommentId { get; set; }
-    }
 }

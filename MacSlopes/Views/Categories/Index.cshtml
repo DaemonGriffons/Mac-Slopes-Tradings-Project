@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Category List Home";
     Layout = "_AdminLayout";
+    var route = $"/Categories/Search/{Model.Search}";
 }
 
 <div class="panel-header">
@@ -10,10 +11,9 @@
         <h2 class="title">Categories</h2>
         <p class="category">
             All Blog Post Categories!<br />
-            <button type="button" class="btn btn-primary"
-                    data-toggle="modal" data-target="#add-category">
+            <a  asp-action="Create" asp-controller="Categories" class="btn btn-primary">
                 Add Blog Post Category
-            </button>
+            </a>
         </p>
     </div>
 </div>
@@ -44,9 +44,9 @@ else
                     <div class="card-body">
                         <div class="row mb-4">
                             <div class="col-md-12">
-                                <form asp-action="Search" asp-controller="Categories" asp-route-search="@Model.Search" class="form" method="post">
+                                <form asp-action="Search" asp-controller="Categories" class="form" method="get">
                                     <div class="input-group">
-                                        <input asp-for="Search" autocomplete="on" class="form-control" placeholder="Search Categories...." />
+                                        <input asp-for="Search" autocomplete="on" value="@ViewBag.Search" class="form-control" placeholder="Search Categories...." />
                                         <div class="input-group-append">
                                             <button type="submit" class="input-group-text">
                                                 <i class="now-ui-icons ui-1_zoom-bold"></i>
@@ -99,6 +99,7 @@ else
                                    list="@Model.PagingCategories"
                                    options="@PagedListRenderOptions.TwitterBootstrapPager4"
                                    asp-action="Index"
+                                   asp-route-Search="@Model.Search"
                                    asp-controller="Categories">
                             </pager>
                         </div>

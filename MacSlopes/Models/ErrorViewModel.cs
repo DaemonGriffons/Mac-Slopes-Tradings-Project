@@ -1,5 +1,3 @@
-using System;
-
 namespace MacSlopes.Models
 {
     public class ErrorViewModel

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using MacSlopes.Controllers;
+﻿using MacSlopes.Controllers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MacSlopes.Extensions

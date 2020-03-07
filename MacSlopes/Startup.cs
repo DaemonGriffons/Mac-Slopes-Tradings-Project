@@ -14,17 +14,16 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.IO.Compression;
+using WebEssentials.AspNetCore.OutputCaching;
+using WebEssentials.AspNetCore.Pwa;
 using WebMarkupMin.AspNet.Common.Compressors;
 using WebMarkupMin.AspNetCore2;
 using WebMarkupMin.Core;
-using WebMarkupMin.NUglify;
 using IWmmLogger = WebMarkupMin.Core.Loggers.ILogger;
-//using MetaWeblogService = Miniblog.Core.Services.MetaWeblogService;
 using WmmNullLogger = WebMarkupMin.Core.Loggers.NullLogger;
 
 namespace MacSlopes
-{
-    [System.Runtime.InteropServices.Guid("EB33D6F3-FC55-4AF3-B32A-FAE7078FEAF5")]
+{ 
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -41,8 +40,9 @@ namespace MacSlopes
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
+                options.MinimumSameSitePolicy = SameSiteMode.Strict;
                 options.ConsentCookie.Name = "Consent";
+                options.ConsentCookie.SecurePolicy = CookieSecurePolicy.Always;
             });
 
             services.AddDbContext<DataContext>(options =>
@@ -53,6 +53,8 @@ namespace MacSlopes
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<DataContext>()
                 .AddDefaultTokenProviders();
+
+            services.AddMemoryCache();
 
             services.ConfigureApplicationCookie(options =>
             {
@@ -79,8 +81,17 @@ namespace MacSlopes
                 options.Lockout.AllowedForNewUsers = false;
                 options.Lockout.MaxFailedAccessAttempts = 4;
             });
+
+            //services.BuildServiceProvider().GetService<DataContext>().Database.Migrate();
             services.Configure<PhotoSettings>(Configuration.GetSection("PhotoSettings"));
+
             services.AddAuthentication();
+            
+            services.AddAntiforgery(options =>
+            {
+                options.Cookie.Name = "XSRF-TOKEN";
+                options.SuppressXFrameOptionsHeader = false;
+            });
             services.AddToastNotification();
             services.AddWebMarkupMin(options =>
                 {
@@ -117,7 +128,7 @@ namespace MacSlopes
                 {
                     options.CompressorFactories = new List<ICompressorFactory>
                     {
- 
+
                         new DeflateCompressorFactory(new DeflateCompressionSettings
                         {
                             Level = CompressionLevel.Fastest
@@ -126,22 +137,33 @@ namespace MacSlopes
                         {
                             Level = CompressionLevel.Fastest
                         }),
+                        new BrotliCompressorFactory(new BrotliCompressionSettings
+                        {
+                            Level= CompressionLevel.Fastest
+                        })
                     };
                 });
-            services.AddAntiforgery(options =>
-            {
-                options.Cookie.Name = "XSRF-TOKEN";
-                options.SuppressXFrameOptionsHeader = false;
-            });
+           
 
+            services.AddOutputCaching(options =>
+            {
+                options.Profiles["Default"] = new OutputCacheProfile
+                {
+                    Duration = 31536000
+                };
+
+            });
+            services.AddProgressiveWebApp(new PwaOptions
+            {
+                OfflineRoute = "/shared/offline/"
+            });
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddSingleton<IWmmLogger, WmmNullLogger>();
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddScoped<IFileManager, FileManager>();
             services.AddScoped<IBlogRepository, BlogRepository>();
             services.AddScoped<ICategoryReporitory, CategoryReporitory>();
+            services.AddScoped<IPhoto, PhotoRepository>();
             services.AddTransient<DataSeed>();
         }
 
@@ -150,20 +172,37 @@ namespace MacSlopes
         {
             if (env.IsDevelopment())
             {
+
                 app.UseDeveloperExceptionPage();
             }
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                app.UseHsts();
+                app.UseHsts(options=>options.AllResponses().IncludeSubdomains().MaxAge(365).Preload());
             }
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseAuthentication();
-
             app.UseWebMarkupMin();
+            app.UseOutputCaching();
+            app.UseXContentTypeOptions();
+            app.UseReferrerPolicy(x => x.NoReferrer());
+            app.UseXfo(x => x.Deny());
+            app.UseRedirectValidation(op =>
+            {
+                op.AllowedDestinations(
+                    "https://code.jquery.com/jquery-3.3.1.slim.min.js",
+                    "https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js",
+                    "https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js");
+                op.AllowSameHostRedirectsToHttps();
+            });
+            app.UseXDownloadOptions();
+            app.UseXRobotsTag(x => x.NoSnippet());
+            app.UseXXssProtection(x => x.EnabledWithBlockMode());
+            app.UseNoCacheHttpHeaders();
+            app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Security.AccessControl;
-using System.Threading.Tasks;
 
 namespace MacSlopes.Models.PostsViewModel
 {
@@ -14,9 +10,13 @@ namespace MacSlopes.Models.PostsViewModel
 
         public string Author { get; set; }
 
+        public string AuthorImage { get; set; }
+
         public string Title { get; set; }
 
         public string Description { get; set; }
+
+        public string Category { get; set; }
 
         public string ImageUrl { get; set; }
 

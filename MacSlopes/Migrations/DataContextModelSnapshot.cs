@@ -36,7 +36,7 @@ namespace MacSlopes.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("MacSlopes.Entities.MainComment", b =>
+            modelBuilder.Entity("MacSlopes.Entities.Comment", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
@@ -55,7 +55,47 @@ namespace MacSlopes.Migrations
 
                     b.HasIndex("PostId");
 
-                    b.ToTable("MainComments");
+                    b.ToTable("Comments");
+                });
+
+            modelBuilder.Entity("MacSlopes.Entities.Photo", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasMaxLength(256);
+
+                    b.Property<DateTime>("DateCreated");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(256);
+
+                    b.Property<string>("FaceBookLink")
+                        .IsRequired()
+                        .HasMaxLength(256);
+
+                    b.Property<string>("InstagramLink")
+                        .IsRequired()
+                        .HasMaxLength(256);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(256);
+
+                    b.Property<string>("PhotoUrl")
+                        .IsRequired()
+                        .HasMaxLength(1024);
+
+                    b.Property<string>("TwitterLink")
+                        .IsRequired()
+                        .HasMaxLength(256);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Photos");
                 });
 
             modelBuilder.Entity("MacSlopes.Entities.Post", b =>
@@ -73,7 +113,7 @@ namespace MacSlopes.Migrations
 
                     b.Property<string>("CategoryId");
 
-                    b.Property<DateTime>("DatePublished");
+                    b.Property<DateTime>("DateCreated");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -83,8 +123,6 @@ namespace MacSlopes.Migrations
                         .IsRequired()
                         .HasMaxLength(1024);
 
-                    b.Property<bool>("IsPublished");
-
                     b.Property<string>("Slug")
                         .IsRequired();
 
@@ -92,33 +130,13 @@ namespace MacSlopes.Migrations
                         .IsRequired()
                         .HasMaxLength(256);
 
+                    b.Property<string>("UserId");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Posts");
-                });
-
-            modelBuilder.Entity("MacSlopes.Entities.SubComment", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("DatePosted");
-
-                    b.Property<string>("Gravator");
-
-                    b.Property<int>("MainCommentId");
-
-                    b.Property<string>("MainCommentId1");
-
-                    b.Property<string>("Message");
-
-                    b.Property<string>("Username");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MainCommentId1");
-
-                    b.ToTable("SubComments");
                 });
 
             modelBuilder.Entity("MacSlopes.Entities.User", b =>
@@ -303,18 +321,18 @@ namespace MacSlopes.Migrations
                         .HasForeignKey("PostId");
                 });
 
-            modelBuilder.Entity("MacSlopes.Entities.MainComment", b =>
+            modelBuilder.Entity("MacSlopes.Entities.Comment", b =>
                 {
                     b.HasOne("MacSlopes.Entities.Post")
-                        .WithMany("MainComments")
+                        .WithMany("Comments")
                         .HasForeignKey("PostId");
                 });
 
-            modelBuilder.Entity("MacSlopes.Entities.SubComment", b =>
+            modelBuilder.Entity("MacSlopes.Entities.Post", b =>
                 {
-                    b.HasOne("MacSlopes.Entities.MainComment")
-                        .WithMany("SubComments")
-                        .HasForeignKey("MainCommentId1");
+                    b.HasOne("MacSlopes.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

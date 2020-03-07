@@ -10,13 +10,10 @@
         <h2 class="title">Categories</h2>
         <div id="modal-placeholder"></div>
         <p class="category">
-            All Blog Post Categories!<br />
-            <button type="button" class="btn btn-primary"
-                    data-toggle="ajax-modal"
-                    data-target="#add-category"
-                    data-url="@Url.Action("Create", "Categories")">
-                Add Blog Post Category
-            </button>
+            Search Results<br />
+            <a asp-action="Index" asp-controller="Categories" class="btn btn-primary">
+                Go Back
+            </a>
         </p>
     </div>
 </div>
@@ -30,16 +27,11 @@
                 <div class="card card-tasks">
                     <div class="card-header">
                         <h4 class="card-title text-center">Search Results for @Model.Search is @Model.PagingCategories.TotalItemCount items</h4>
-                        <p class="card-text text-center">
-                            <a asp-action="Index" asp-controller="Categories" class="btn btn-outline-primary btn-round">
-                                <i class="now-ui-icons arrows-1_minimal-left"></i>&nbsp;&nbsp; Go Back
-                            </a>
-                        </p>
                     </div>
                     <div class="card-body">
                         <div class="row mb-4">
                             <div class="col-md-8 ml-auto mr-auto">
-                                <form asp-action="Search" asp-controller="Categories" class="form" method="post">
+                                <form asp-controller="Categories" asp-action="Search" class="form" method="get">
                                     <div class="input-group">
                                         <input asp-for="Search" autocomplete="on" class="form-control" placeholder="Search Categories...." />
                                         <div class="input-group-append">
@@ -73,18 +65,13 @@ else
                 <div class="card card-tasks">
                     <div class="card-header">
                         <h4 class="card-title text-center">Search Results for @Model.Search is @Model.PagingCategories.TotalItemCount</h4>
-                        <p class="card-text text-center">
-                            <a asp-action="Index" asp-controller="Categories" class="btn btn-outline-primary btn-round">
-                                <i class="now-ui-icons arrows-1_minimal-left"></i>&nbsp;&nbsp; Go Back
-                            </a>
-                        </p>
                     </div>
                     <div class="card-body">
                         <div class="row mb-4">
                             <div class="col-md-8 ml-auto mr-auto">
-                                <form asp-action="Search" asp-controller="Categories" asp-route-search="@Model.Search" class="form" method="post">
+                                <form asp-action="Search" asp-controller="Categories" class="form" method="get">
                                     <div class="input-group">
-                                        <input asp-for="Search" autocomplete="on" class="form-control" placeholder="Search Categories...." />
+                                        <input asp-for="Search" autocomplete="on" class="form-control" value="@ViewBag.Search" placeholder="Search Categories...." />
                                         <div class="input-group-append">
                                             <button type="submit" class="input-group-text">
                                                 <i class="now-ui-icons ui-1_zoom-bold"></i>
@@ -132,11 +119,12 @@ else
                                 </tbody>
                             </table>
                         </div>
-                        <div class="row justify-content-center">
+                        <div class="row d-flex justify-content-center">
                             <div class="row justify-content-center mb-3 mt-3">
                                 <pager list="@Model.PagingCategories"
                                        options="@PagedListRenderOptions.TwitterBootstrapPager4"
                                        asp-action="Search"
+                                       asp-route-Search="@ViewBag.Search"
                                        asp-controller="Categories">
                                 </pager>
                             </div>

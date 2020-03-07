@@ -53,14 +53,7 @@
                                 <span asp-validation-for="NewImage" class="text-primary"></span>
                             </div>
                             <div class="col-md-6">
-                                <div class="input-group">
-                                    <select asp-for="CategoryId" class="form-control" asp-items="@ViewBag.Categories"></select>
-                                    <div class="input-group-append">
-                                        <div class="input-group-text">
-                                            <i class="now-ui-icons gestures_tap-01"></i>
-                                        </div>
-                                    </div>
-                                </div>
+                                <select asp-for="CategoryId" class="selectpicker" data-style="select-with-transition" title="Select Post Category" data-size="7" asp-items="@Model.Categories"></select>
                                 <span asp-validation-for="CategoryId" class="text-primary"></span>
                             </div>
                         </div>
@@ -82,21 +75,10 @@
                             </div>
 
                         </div>
-                        <div class="row mb-2">
-                            <div class="col-md-12">
-                                <div class="form-check">
-                                    <label class="form-check-label text-primary" asp-for="Publish">
-                                        <input asp-for="Publish" class="form-check-input"/>
-                                        <span class="form-check-sign"></span>
-                                        @Html.DisplayNameFor(x => x.Publish)
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
                         <div class="row">
                             <div class="col-md-12">
                                 <button type="submit" class="btn btn-block btn-lg btn-primary btn-round">
-                                    <i class="now-ui-icons ui-2_chat-round"></i>&nbsp;&nbsp;Create New Blog Post
+                                    <i class="now-ui-icons ui-2_chat-round"></i>&nbsp;&nbsp;Modify Blog Post
                                 </button>
                             </div>
                         </div>
@@ -108,6 +90,7 @@
 </div>
 
 @section Scripts{
+    <script src="~/lib/nowui-dashboard/js/bootstrap-selectpicker.js"></script>
     <script src="~/lib/CkEditor/ckeditor/ckeditor.js"></script>
     <script src="~/lib/CkEditor/ckeditor/config.js"></script>
     <script>

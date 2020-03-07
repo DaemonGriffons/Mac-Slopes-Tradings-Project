@@ -25,7 +25,7 @@
             <div class="col-md-10 ml-auto mr-auto">
                 <div class="alert alert-danger alert-with-icon" data-notify="container">
                     <span data-notify="icon" class="now-ui-icons objects_support-17"></span>
-                    <span data-notify="message">You have not created blog posts yet..<br />Try Adding Some Blog Post Categories</span>
+                    <span data-notify="message">You have not created any blog posts yet..<br />Try Adding Some Blog Posts</span>
                 </div>
             </div>
         </div>
@@ -33,122 +33,103 @@
 }
 else
 {
-    <div class="content">
-        <div class="row mt-2">
-            <div class="col-md-12">
-                <div class="card card-tasks">
-                    <div class="card-header">
-                        <h4 class="card-title text-center">Search Below for Blog Posts</h4>
-                    </div>
-                    <div class="card-body">
-                        <div class="row mb-4">
-                            <div class="col-md-6 ml-auto">
-                                <form class="form" action="/Posts/Index/@Model.Search">
-                                    <div class="input-group">
-                                        <input asp-for="Search" autocomplete="on" class="form-control" placeholder="Search Here...." />
-                                        <div class="input-group-append">
-                                            <button type="submit" class="input-group-text">
-                                                <i class="now-ui-icons ui-1_zoom-bold"></i>
-                                            </button>
-                                        </div>
+<div class="content">
+    <div class="row mt-2">
+        <div class="col-md-12">
+            <div class="card card-tasks">
+                <div class="card-header">
+                    <h4 class="card-title text-center">@ViewBag.Description</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-md-8 mx-auto">
+                            <form asp-controller="Posts" asp-action="Search" method="get" class="form">
+                                <div class="input-group">
+                                    <input asp-for="Search" class="form-control" placeholder="Search for Posts..." />
+                                    <div class="input-group-append">
+                                        <button type="submit" class="input-group-text">
+                                            <i class="now-ui-icons ui-1_zoom-bold"></i>
+                                        </button>
                                     </div>
-                                </form>
-                            </div>
+                                </div>
+                            </form>
                         </div>
-                        <div class="table-full-width table-responsive">
-                            <table class="table">
-                                <thead>
+                    </div>
+                    <div class="table-full-width table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Image
+                                    </th>
+                                    <th>
+                                        Title
+                                    </th>
+                                    <th>
+                                        Description
+                                    </th>
+                                    <th>
+                                        Comments
+                                    </th>
+                                    <th>
+                                        Actions
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var post in Model.PostsIndexViewModels)
+                                {
+                                    var src = $"/api/Images/{post.ImageUrl}";
+                                    var url = $"/Posts/Delete/{post.Id}";
                                     <tr>
-                                        <th>
-                                            Image
-                                        </th>
-                                        <th>
-                                            Title
-                                        </th>
-                                        <th>
-                                            Description
-                                        </th>
-                                        <th>
-                                            Comments
-                                        </th>
-                                        <th>Likes</th>
-                                        <th>
-                                            Published ?
-                                        </th>
-                                        <th>
-                                            Actions
-                                        </th>
+                                        <td class="p-3">
+                                            <a asp-controller="Posts" asp-action="Post" asp-route-Id="@post.Id">
+                                                <img src="@src" alt="@post.Title Image" class="img-fluid imageresize" />
+                                            </a>
+                                        </td>
+                                        <td>
+                                            @post.Title
+                                        </td>
+                                        <td>
+                                            @post.Description
+                                        </td>
+                                        <td class="text-center">
+                                            @post.CommentCount
+                                        </td>
+                                        <td class="td-actions">
+                                            <a asp-action="Post" asp-controller="Posts" asp-route-id="@post.Id" rel="tooltip" title=""
+                                               class="btn btn-success btn-round btn-icon btn-icon-mini btn-neutral"
+                                               data-original-title="Edit Post">
+                                                <i class="now-ui-icons gestures_tap-01"></i>
+                                            </a>
+                                            <a asp-action="Edit" asp-controller="Posts" asp-route-id="@post.Id" rel="tooltip" title=""
+                                               class="btn btn-info btn-round btn-icon btn-icon-mini btn-neutral"
+                                               data-original-title="Edit Post">
+                                                <i class="now-ui-icons ui-2_settings-90"></i>
+                                            </a>
+                                            <a onclick="Delete('@Url')" title=""
+                                               class="btn btn-info btn-round btn-icon btn-icon-mini btn-neutral"
+                                               data-original-title="Edit Post">
+                                                <i class="now-ui-icons ui-1_simple-remove"></i>
+                                            </a>
+                                        </td>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var post in Model.PostsIndexViewModels)
-                                    {
-                                        var scr = $"/api/Images/{post.ImageUrl}";
-                                        var Url = $"/Posts/Delete/{post.Id}";
-                                        <tr>
-                                            <td>
-                                                <a asp-action="Post" asp-controller="Posts" asp-route-id="@post.Id">
-                                                    <img src="@scr" alt="@post.Title image" class="img-fluid imageresize" />
-                                                </a>
-                                            </td>
-                                            <td>
-                                                @post.Title
-                                            </td>
-                                            <td>
-                                                @post.Description
-                                            </td>
-                                            <td>
-                                            <td>
-                                                @post.CommentCount
-                                            </td>
-                                            <td>
-                                                4
-                                            </td>
-                                            <td>
-                                                @if (post.IsPublished)
-                                                {
-                                                    <i class="now-ui-icons ui-1_check check-success"></i>
-                                                }
-                                                else
-                                                {
-                                                    <i class="now-ui-icons ui-1_simple-remove check-danger"></i>
-                                                }
-                                            </td>
-                                            <td class="td-actions">
-                                                <a asp-action="Post" asp-controller="Posts" asp-route-id="@post.Id" rel="tooltip" title=""
-                                                   class="btn btn-success btn-round btn-icon btn-icon-mini btn-neutral"
-                                                   data-original-title="Edit Post">
-                                                    <i class="now-ui-icons gestures_tap-01"></i>
-                                                </a>
-                                                <a asp-action="Edit" asp-controller="Posts" asp-route-id="@post.Id" rel="tooltip" title=""
-                                                   class="btn btn-info btn-round btn-icon btn-icon-mini btn-neutral"
-                                                   data-original-title="Edit Post">
-                                                    <i class="now-ui-icons ui-2_settings-90"></i>
-                                                </a>
-                                                <a onclick="Delete('@Url')" title=""
-                                                   class="btn btn-info btn-round btn-icon btn-icon-mini btn-neutral"
-                                                   data-original-title="Edit Post">
-                                                    <i class="now-ui-icons ui-1_simple-remove"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <div class="row justify-content-center mb-3 mt-3">
-                            <pager list="@Model.PostsIndexViewModels"
-                                   options="@PagedListRenderOptions.TwitterBootstrapPager4"
-                                   asp-action="Index"
-                                   asp-controller="Posts">
-                            </pager>
-                        </div>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row d-flex justify-content-center my-3">
+                        <pager list="@Model.PostsIndexViewModels"
+                               options="@PagedListRenderOptions.TwitterBootstrapPager4"
+                               asp-controller="Posts"
+                               asp-action="Search"
+                               asp-route-Search="@Model.Search"></pager>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 }
 
 
@@ -161,15 +142,19 @@ else
             var target;
             $('body').append(`
                         <div class="modal fade modal-mini modal-primary" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-dialog" role="document">
                              <div class="modal-content">
-                              
+                              <div class="modal-header justify-content-center">
+                                <div class="modal-profile">
+                                    <i class="now-ui-icons users_circle-08"></i>
+                                </div>
+                            </div>
                             <div class="modal-body delete-modal-body">
-                                <h5 class="text-center">Are you Sure You want to delete this Item</h5>
+                                <h6 class="text-center">Are you Sure You want to delete this Item</h6>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal" id="cancel-delete">Cancel</button>
-                                <button type="button" class="btn btn-danger" id="confirm-delete">Delete</button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal" id="cancel-delete">No, Don't</button>
+                                <button type="button" class="btn btn-danger" id="confirm-delete">Yes, Remove</button>
                             </div>
                             </div>
                         </div>

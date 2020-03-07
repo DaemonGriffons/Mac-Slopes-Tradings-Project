@@ -10,7 +10,7 @@
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
         <link href="~/lib/font-awesome/css/font-awesome.css" rel="stylesheet" />
-        <link href="~/lib/nowui-dashboard/css/now-ui-dashboard.css" rel="stylesheet" />
+        <link href="~/lib/nowui-dashboard/css/now-ui-dashboard.min290d.css" rel="stylesheet" />
         <link href="~/lib/toastr/toastr.min.css" rel="stylesheet" />
     </environment>
     <environment exclude="Development">
@@ -19,11 +19,10 @@
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
         <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css" />
-        <link rel="stylesheet" href="~/css/Admin.css" />
     </environment>
     @RenderSection("Styles",required:false)
 </head>
-<body class="">
+<body class="sidebar-mini">
     @await Component.InvokeAsync("ClientNotifications.Notify")
 
     <div class="wrapper ">
@@ -32,56 +31,30 @@
                 Tip 1: You can change the color of the sidebar using: data-color="blue | green | orange | red | yellow"
             -->
             <div class="logo">
-                <a href="http://www.creative-tim.com" class="simple-text logo-mini">
+                <a asp-action="Index" asp-controller="Admin" target="_blank" class="simple-text logo-mini">
+                    MST
                 </a>
                 <a asp-action="Index" asp-controller="Home" target="_blank" class="simple-text logo-normal">
                     Mac Slopes Tradings
                 </a>
+
+                <div class="navbar-minimize">
+                    <button id="minimizeSidebar" class="btn btn-simple btn-icon btn-info btn-round">
+                        <i class="now-ui-icons text_align-center visible-on-sidebar-regular"></i>
+                        <i class="now-ui-icons design_bullet-list-67 visible-on-sidebar-mini"></i>
+                    </button>
+                </div>
             </div>
             <div class="sidebar-wrapper" id="sidebar-wrapper">
-                <ul class="nav">
-                    <li is-active-route asp-action="Index" asp-controller="Admin">
-                        <a asp-action="Index" asp-controller="Admin">
-                            <i class="now-ui-icons design_app"></i>
-                            <p>Dashboard</p>
-                        </a>
-                    </li>
-                    <li is-active-route asp-action="Index" asp-controller="Posts">
-                        <a asp-action="Index" asp-controller="Posts">
-                            <i class="now-ui-icons education_atom"></i>
-                            <p>Blog Posts</p>
-                        </a>
-                    </li>
-                    <li is-active-route asp-action="Index" asp-controller="Notifications">
-                        <a asp-action="Index" asp-controller="Notifications">
-                            <i class="now-ui-icons ui-1_bell-53"></i>
-                            <p>Notifications</p>
-                        </a>
-                    </li>
-                    <li is-active-route asp-action="Index" asp-controller="Manage">
-                        <a asp-action="Index" asp-controller="Manage">
-                            <i class="now-ui-icons users_single-02"></i>
-                            <p>User Profile</p>
-                        </a>
-                    </li>
-                    <li is-active-route asp-action="Index" asp-controller="Categories">
-                        <a asp-action="Index" asp-controller="Categories">
-                            <i class="now-ui-icons design_bullet-list-67"></i>
-                            <p>Blog Categories</p>
-                        </a>
-                    </li>
-                    <li  is-active-route asp-action="Index" asp-controller="Marketing">
-                        <a asp-action="Index" asp-controller="Marketing">
-                            <i class="now-ui-icons ui-1_send"></i>
-                            <p>Email Marketing</p>
-                        </a>
-                    </li>
-                </ul>
+                <div class="user">
+                    @await Component.InvokeAsync("AdminComponent")
+                </div>
+                <partial name="NavPartial" />
             </div>
         </div>
         <div class="main-panel" id="main-panel">
             <!-- Navbar -->
-            <nav class="navbar navbar-expand-lg navbar-transparent  bg-primary  navbar-absolute">
+            <nav class="navbar navbar-expand-lg bg-primary navbar-absolute navbar-transparent">
                 <div class="container-fluid">
                     <div class="navbar-wrapper">
                         <div class="navbar-toggle">
@@ -102,25 +75,26 @@
                         <ul class="navbar-nav">
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="now-ui-icons ui-1_bell-53"></i>
-                                    <p>
-                                        <span class="d-lg-none d-md-block">Some Actions</span>
-                                    </p>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                                    <a class="dropdown-item" href="#">Action</a>
-                                    <a class="dropdown-item" href="#">Another action</a>
-                                    <a class="dropdown-item" href="#">Something else here</a>
-                                </div>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#pablo">
                                     <i class="now-ui-icons users_single-02"></i>
                                     <p>
                                         <span class="d-lg-none d-md-block">Account</span>
                                     </p>
                                 </a>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                                    <a class="dropdown-item text-info" asp-controller="Manage" asp-action="Index">
+                                        <i class="now-ui-icons business_badge"></i>&nbsp;My Account
+                                    </a>
+                                    <a class="dropdown-item text-info" asp-controller="Manage" asp-action="ChangePassword">
+                                        <i class="now-ui-icons ui-1_lock-circle-open"></i>&nbsp;New Password
+                                    </a>
+                                    <form class="form" asp-controller="Account" asp-action="SignOut">
+                                        <button type="submit" class="dropdown-item text-danger">
+                                            <i class="now-ui-icons sport_user-run"></i>&nbsp; Sign Out
+                                        </button>
+                                    </form>
+                                </div>
                             </li>
+
                         </ul>
                     </div>
                 </div>
@@ -133,10 +107,10 @@
         <script src="~/lib/jquery/jquery.js"></script>
         <script src="~/lib/popper/umd/popper.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>
-        <script src="~/lib/nowui-dashboard/js/now-ui-dashboard.js"></script>
+
+        <script src="~/lib/nowui-dashboard/js/now-ui-dashboard.min290d.js"></script>
         <script src="~/lib/toastr/toastr.min.js"></script>
-        @*<script src="~/js/delete.js"></script>*@
+        <script src="~/js/site.js" asp-append-version="true"></script>
     </environment>
     <environment exclude="Development">
         <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"
@@ -156,6 +130,9 @@
         <script src="~/lib/bootbox/bootbox.min.js"></script>
     </environment>
 
-            @RenderSection("Scripts", required: false)
+
+
+    @RenderSection("Scripts", required: false)
+
 </body>
 </html>

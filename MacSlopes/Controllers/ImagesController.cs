@@ -1,10 +1,6 @@
-﻿using MacSlopes.Models.PostsViewModel;
+﻿using MacSlopes.Entities.Data;
 using MacSlopes.Services.Abstract;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Linq;
-using MacSlopes.Entities.Data;
-using Microsoft.EntityFrameworkCore;
 
 namespace MacSlopes.Controllers
 {

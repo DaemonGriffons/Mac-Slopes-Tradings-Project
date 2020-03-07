@@ -1,0 +1,184 @@
+﻿@model PhotosListViewModel
+@{
+    ViewData["Title"] = "Image Gallery";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="panel-header">
+    <div class="header text-center">
+        <h2 class="title">@ViewData["Title"]</h2>
+        <p class="category">
+            <a class="btn btn-primary"
+               asp-controller="Photos"
+               asp-action="Create">
+                Add New Gallery Item
+            </a>
+        </p>
+    </div>
+</div>
+
+@if (!Model.Photos.Any())
+{
+    <div class="content">
+        <div class="row mt-2">
+            <div class="col-md-10 ml-auto mr-auto">
+                <div class="alert alert-danger alert-with-icon" data-notify="container">
+                    <span data-notify="icon" class="now-ui-icons objects_support-17"></span>
+                    <span data-notify="message">You have not created Any Gallery Item yet..<br />Try Adding Some Gallery Items</span>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="content">
+        <div class="row mt-2">
+            <div class="col-md-12">
+                <div class="card card-tasks">
+                    <div class="card-body">
+                        <div class="row mb-4">
+                            <div class="col-md-8 mx-auto">
+                                <form asp-controller="Photos" asp-action="Search" method="get" class="form">
+                                    <div class="input-group">
+                                        <input asp-for="Search" class="form-control" placeholder="Search the Image Gallery..." />
+                                        <div class="input-group-append">
+                                            <button type="submit" class="input-group-text">
+                                                <i class="now-ui-icons ui-1_zoom-bold"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="table-full-width table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                Image
+                                            </th>
+                                            <th>
+                                                Title
+                                            </th>
+                                            <th>
+                                                Description
+                                            </th>
+                                            <th>
+                                                Category
+                                            </th>
+                                            <th>
+                                                Date Created
+                                            </th>
+                                            <th class="text-center">
+                                                Action?
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var photo in Model.Photos)
+                                        {
+                                            var src = $"/api/Images/{photo.PhotoUrl}";
+                                            var actionUrl = $"/Photos/DeletePhoto?id={photo.Id}";
+                                            <tr>
+                                                <td class="p-3">
+                                                    <a asp-controller="Photos" asp-action="PhotoDetails" asp-route-Id="@photo.Id">
+                                                        <img src="@src" alt="@photo.Name Image" class="img-fluid imageresize"/>
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    @photo.Name
+                                                </td>
+                                                <td>
+                                                    @photo.Description
+                                                </td>
+                                                <td>
+                                                    @photo.Category
+                                                </td>
+                                                <td>
+                                                    @photo.DateCreated
+                                                </td>
+                                                <td class="td-actions text-right">
+                                                    <a asp-action="PhotoDetails" asp-controller="Photos" asp-route-id="@photo.Id" rel="tooltip" title=""
+                                                       class="btn btn-success btn-round btn-icon btn-icon-mini btn-neutral"
+                                                       data-original-title="View Photo">
+                                                        <i class="now-ui-icons gestures_tap-01"></i>
+                                                    </a>
+                                                    <a asp-action="EditPhoto" asp-controller="Photos" asp-route-id="@photo.Id" rel="tooltip" title=""
+                                                       class="btn btn-info btn-round btn-icon btn-icon-mini btn-neutral"
+                                                       data-original-title="Edit Photo">
+                                                        <i class="now-ui-icons ui-2_settings-90"></i>
+                                                    </a>
+                                                    <a onclick="Delete('@actionUrl')" title=""
+                                                       class="btn btn-info btn-round btn-icon btn-icon-mini btn-neutral"
+                                                       data-original-title="Edit Post">
+                                                        <i class="now-ui-icons ui-1_simple-remove"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row d-flex justify-content-center my-3">
+                            <pager asp-controller="Photos" asp-action="Index"
+                                   list="@Model.Photos"
+                                   options="@PagedListRenderOptions.TwitterBootstrapPager4"></pager>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+@section Scripts{
+    <script type="text/javascript">
+
+        function Delete(url) {
+            var Url = url;
+            var redirectUrl = "/Photos/Index/";
+            var target;
+            $('body').append(`
+                        <div class="modal fade modal-mini modal-primary" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                             <div class="modal-content">
+
+                            <div class="modal-header justify-content-center">
+                    <div class="modal-profile">
+                        <i class="now-ui-icons users_circle-08"></i>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <p>Are You sure You want to delete this item</p>
+                </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal" id="cancel-delete">Cancel</button>
+                                <button type="button" class="btn btn-danger" id="confirm-delete">Delete</button>
+                            </div>
+                            </div>
+                        </div>
+                        </div>`);
+            $("#deleteModal").modal('show');
+            $("#confirm-delete").on('click', (e) => {
+                target = e.target;
+                $.post(Url)
+                    .done((result) => {
+                        if (!redirectUrl) {
+                            return $(target).parent().parent().hide("slow");
+                        }
+                        window.location.href = redirectUrl;
+                    })
+                    .fail((error) => {
+                        if (redirectUrl)
+                            window.location.href = redirectUrl;
+                    }).always(() => {
+                        $("#deleteModal").modal('hide');
+                    });
+            });
+        }
+    </script>
+}

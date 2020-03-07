@@ -1,0 +1,61 @@
+﻿@model PhotosIndexViewModel
+@{
+    ViewData["Title"] = $"{Model.Name} Image";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+    var src = $"/api/Images/{Model.PhotoUrl}";
+    var fb = $"https://facebook.com/{Model.FaceBookLink}";
+    var insta = $"https://www.instagram.com/{Model.InstagramLink}";
+    var tw = $"https://twitter.com/{Model.TwitterLink}";
+}
+
+<div class="panel-header">
+    <div class="header text-center">
+        <h2 class="title">Gallery Photo</h2>
+        <p class="category">
+            @ViewData["Title"]<br />
+            <a class="btn btn-primary" asp-action="Index" asp-controller="Photos">
+                Go Back To All Gallery Photos
+            </a>
+        </p>
+    </div>
+</div>
+
+<div class="content">
+    <div class="row mt-3">
+        <div class="col-md-8 mx-auto">
+            <div class="card card-tasks">
+                <div class="card-body">
+                    <div class="row m-3">
+                        <div class="col-md-6">
+                            <img src="@src" class="img-fluid img-raised" alt="@Model.Name Image" />
+                        </div>
+                        <div class="col-md-6">
+                            <h4 class="text-center Bold text-info">@Model.Name</h4>
+                            <h5 class="card-category text-center">
+                                <span class="badge badge-primary">@Model.Category</span>
+                            </h5>
+                            <p class="card-text text-center text-muted">
+                                @Model.Description
+                            </p>
+                            <hr />
+                        </div>
+                    </div>
+                </div>
+                <div class="justify-content-center align-content-center">
+                    <p class="button-container text-center">
+                        <a target="_blank" href="@fb" class="btn btn-neutral btn-icon btn-round btn-lg">
+                            <i class="fa fa-facebook-f"></i>
+                        </a>
+                        <a target="_blank" href="@insta" class="btn btn-neutral btn-icon btn-round btn-lg">
+                            <i class="fa fa-instagram"></i>
+                        </a>
+                        <a target="_blank" href="@tw" class="btn btn-neutral btn-icon btn-round btn-lg">
+                            <i class="fa fa-twitter"></i>
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

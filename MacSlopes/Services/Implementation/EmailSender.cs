@@ -1,20 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Mail;
-using System.Threading.Tasks;
-using MacSlopes.Extensions;
-using MacSlopes.Services.Abstract;
-using Microsoft.Extensions.Options;
-using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
+﻿using MacSlopes.Services.Abstract;
 using SendGrid;
 using SendGrid.Helpers.Mail;
+using System.Threading.Tasks;
 
 namespace MacSlopes.Services.Implementation
 {
     public class EmailSender : IEmailSender
     {
+
+        
         //public AuthMessageSenderOptions _options;
 
         //public EmailSender(IOptions<AuthMessageSenderOptions> options)
@@ -23,7 +17,7 @@ namespace MacSlopes.Services.Implementation
         //}
         public Task SendMail(string email, string subject, string body)
         {
-           return Execute("SendGrid API Key", subject, body, email);
+           return Execute("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", subject, body, email);
         }
 
         private Task Execute(string apiKey, string subject, string message, string email)
@@ -31,7 +25,7 @@ namespace MacSlopes.Services.Implementation
             var client = new SendGridClient(apiKey);
             var msg = new SendGridMessage()
             {
-                From = new EmailAddress("Your Email Address", "User Name"),
+                From = new EmailAddress("daemongriffons@gmail.com", "Daemon Griffons"),
                 Subject = subject,
                 PlainTextContent = message,
                 HtmlContent = message,
@@ -43,6 +37,27 @@ namespace MacSlopes.Services.Implementation
             msg.SetClickTracking(false, false);
 
             return client.SendEmailAsync(msg);
+        }
+
+        public Task ContactEmail(string email, string Name, string subject, string body)
+        {
+            return Mail("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", email, subject, Name, body);
+        }
+        private Task Mail(string apiKey, string Email, string Subject,string Name,string Body)
+        {
+            var client = new SendGridClient(apiKey);
+            var message = new SendGridMessage()
+            {
+                From = new EmailAddress(Email, Name),
+                Subject = Subject,
+                PlainTextContent = Body,
+                HtmlContent = Body
+            };
+
+            message.AddTo("daemongriffons@gmail.com", "Daemon Griffons");
+            message.SetClickTracking(false, false);
+
+            return client.SendEmailAsync(message);
         }
     }
 }

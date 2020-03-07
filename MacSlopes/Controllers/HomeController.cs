@@ -1,23 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using MacSlopes.Models;
-using ClientNotifications;
+﻿using ClientNotifications;
 using ClientNotifications.Helpers;
-using static ClientNotifications.Helpers.NotificationHelper;
+using MacSlopes.Models;
+using MacSlopes.Services.Abstract;
+using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace MacSlopes.Controllers
 {
     public class HomeController : Controller
     {
-        private IClientNotification _notification;
+        private readonly IClientNotification _notification;
+        private readonly IEmailSender _emailSender;
 
-        public HomeController(IClientNotification notification)
+        public HomeController(IClientNotification notification, IEmailSender emailSender)
         {
             _notification = notification;
+            _emailSender = emailSender;
         }
         public IActionResult Index()
         {
@@ -28,25 +27,53 @@ namespace MacSlopes.Controllers
                     {
                         NewestOnTop = true,
                         CloseButton = true,
-                        PositionClass = "toast-top-full-width",
+                        PositionClass = "toast-bottom-right",
                         PreventDuplicates = true
                     });
             }
             return View();
         }
 
+        [ResponseCache(Location = ResponseCacheLocation.Client, NoStore =false)]
         public IActionResult About()
         {
-            ViewData["Message"] = "Your application description page.";
 
             return View();
         }
 
         public IActionResult Contact()
         {
-            ViewData["Message"] = "Your contact page.";
 
             return View();
+        }
+
+
+        [HttpPost,ValidateAntiForgeryToken]
+        public async Task<IActionResult> Contact(ContactUsViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                await _emailSender.ContactEmail(model.Email, model.Name, model.Subject, model.Message);
+                _notification.AddToastNotification("Message Sent Successfully",
+                  NotificationHelper.NotificationType.success, new ToastNotificationOption
+                  {
+                      NewestOnTop = true,
+                      CloseButton = true,
+                      PositionClass = "toast-bottom-right",
+                      PreventDuplicates = true
+                  });
+                return View();
+
+            }
+            _notification.AddToastNotification("You Have Made Errors",
+                   NotificationHelper.NotificationType.error, new ToastNotificationOption
+                   {
+                       NewestOnTop = true,
+                       CloseButton = true,
+                       PositionClass = "toast-bottom-right",
+                       PreventDuplicates = true
+                   });
+            return View(model);
         }
 
         public IActionResult Privacy()
@@ -57,7 +84,7 @@ namespace MacSlopes.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View();
         }
     }
 }

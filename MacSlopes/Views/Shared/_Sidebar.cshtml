@@ -1,0 +1,15 @@
+﻿
+    <div class="container">
+        <div class="row mb-3 border-bottom">
+            <h4 class="font-weight-bolder text-primary pr-5">All The Latest Posts</h4>
+        </div>
+        <div class="row">
+            @await Component.InvokeAsync("BlogComponent")
+        </div>
+        <div class="row mb-3 border-bottom border-top">
+            <h4 class="font-weight-bolder text-primary pr-5">Blog Categories</h4>
+        </div>
+        <div class="row">
+            @await Component.InvokeAsync("CategoryComponent")
+        </div>
+    </div>

@@ -1,0 +1,59 @@
+﻿@model CategoryCreateViewModel
+@{
+    ViewData["Title"] = "Create A New Category";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+
+<div class="panel-header">
+    <div class="header text-center">
+        <h2 class="title">Create New Category Tag</h2>
+        <p class="category">
+            <a asp-action="Index" asp-controller="Categories" class="btn btn-primary">
+                Go Back
+            </a>
+        </p>
+    </div>
+</div>
+
+<div class="content">
+    <div class="row mt-2">
+        <div class="col-md-6 mx-auto">
+            <div class="card card-tasks">
+                <div class="card-header">
+                    <div class="card-title text-center text-capitalize">@ViewData["Title"]</div>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Create" asp-controller="Categories">
+                        <div class="text-primary" asp-validation-summary="All"></div>
+                        <div class="row mb-2">
+                            <div class="col-md-12">
+                                <input asp-for="Id" type="hidden" />
+                                <div class="input-group">
+                                    <input asp-for="Name" class="form-control" placeholder="Enter Modified Category Name..." />
+                                    <div class="input-group-append">
+                                        <div class="input-group-text">
+                                            <i class="now-ui-icons design-2_ruler-pencil"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-11 mx-auto">
+                                <button type="submit" class="btn btn-primary btn-block">
+                                    <i class="now-ui-icons design-2_ruler-pencil"></i>&nbsp;&nbsp; Modify This Category Name
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,168 @@
+﻿@model UserManagementListViewModel
+@{
+    ViewData["Title"] = "Application Users";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="panel-header">
+    <div class="header text-center">
+        <h2 class="title">@ViewData["Title"]</h2>
+    </div>
+</div>
+
+@if (!Model.Users.Any())
+{
+    <div class="content">
+        <div class="row mt-2">
+            <div class="col-md-10 ml-auto mr-auto">
+                <div class="alert alert-danger alert-with-icon" data-notify="container">
+                    <span data-notify="icon" class="now-ui-icons objects_support-17"></span>
+                    <span data-notify="message">You do not have any Users Yet<br />Don't worry they are coming soon..</span>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="content">
+        <div class="row mt-2">
+            <div class="col-md-12">
+                <div class="card card-tasks">
+                    <div class="card-header">
+                        <h4 class="card-title text-center">All Of The Application Users</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-4">
+                            <div class="col-md-8 mx-auto">
+                                <form asp-action="Search" asp-controller="UserManagement" method="get" class="form">
+                                    <div class="input-group">
+                                        <input asp-for="Search" class="form-control" placeholder="Search for Users..." />
+                                        <div class="input-group-append">
+                                            <button type="submit" class="input-group-text">
+                                                <i class="now-ui-icons ui-1_zoom-bold"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="table-responsive table-full-width">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Image</th>
+                                        <th>Username</th>
+                                        <th>Name</th>
+                                        <th>Surname</th>
+                                        <th>Date Registered</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var user in Model.Users)
+                                    {
+                                        var src = $"/api/Images/{user.ImageUrl}";
+                                        <tr>
+                                            <td class="p-3">
+                                                <div class="img-container">
+                                                    @if (!String.IsNullOrWhiteSpace(user.ImageUrl))
+                                                    {
+                                                        <img src="@src" alt="User Profile Picture" class="img-fluid img-raised imageresize" />
+                                                    }
+                                                    else
+                                                    {
+                                                        <img src="~/images/anime3.png" class="img-fluid img-raised imageresize" />
+                                                    }
+                                                </div>
+                                            </td>
+                                            <td>
+                                                @user.Username
+                                            </td>
+                                            <td>
+                                                @user.Name
+                                            </td>
+                                            <td>
+                                                @user.Surname
+                                            </td>
+                                            <td>
+                                                @user.DateRegistered
+                                            </td>
+                                            <td class="td-actions">
+                                                <a asp-action="UserDetails" asp-controller="UserManagement" asp-route-userId="@user.Id" rel="tooltip" title="View User Profile"
+                                                   class="btn btn-success btn-round btn-icon btn-icon-mini btn-neutral"
+                                                   data-original-title="View User Profile">
+
+                                                    <i class="now-ui-icons gestures_tap-01"></i>
+                                                </a>
+                                                <a onclick="Delete('@Url')" title="Remove User Profile" rel="tooltip"
+                                                   class="btn btn-info btn-round btn-icon btn-icon-mini btn-neutral"
+                                                   data-original-title="Remove User Profile">
+                                                    <i class="now-ui-icons ui-1_simple-remove"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row d-flex justify-content-center my-3">
+                            <pager list="@Model.Users"
+                                   options="@PagedListRenderOptions.TwitterBootstrapPager4"
+                                   asp-controller="UserManagement"
+                                   asp-action="Index"
+                                   asp-route-Search="@Model.Search"></pager>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts{
+    <script type="text/javascript">
+
+        function Delete(url) {
+            var Url = url;
+            var redirectUrl = "/UserManagement/Index/";
+            var target;
+            $('body').append(`
+                        <div class="modal fade modal-mini modal-primary" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                             <div class="modal-content">
+                                 <div class="modal-header justify-content-center">
+                                <div class="modal-profile">
+                                    <i class="now-ui-icons users_circle-08"></i>
+                                </div>
+                            </div>
+                            <div class="modal-body delete-modal-body">
+                                <h5 class="text-center">Are you Sure You want to delete this Item</h5>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal" id="cancel-delete">Cancel</button>
+                                <button type="button" class="btn btn-danger" id="confirm-delete">Delete</button>
+                            </div>
+                            </div>
+                        </div>
+                        </div>`);
+            $("#deleteModal").modal('show');
+            $("#confirm-delete").on('click', (e) => {
+                target = e.target;
+                $.post(Url)
+                    .done((result) => {
+                        if (!redirectUrl) {
+                            return $(target).parent().parent().hide("slow");
+                        }
+                        window.location.href = redirectUrl;
+                    })
+                    .fail((error) => {
+                        if (redirectUrl)
+                            window.location.href = redirectUrl;
+                    }).always(() => {
+                        $("#deleteModal").modal('hide');
+                    });
+            });
+        }
+    </script>
+}

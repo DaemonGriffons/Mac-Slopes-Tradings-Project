@@ -1,0 +1,46 @@
+﻿@model AdminIndexViewModel
+@{ 
+    var src = $"/api/Images/{Model.ImageUrl}";
+}
+
+<div class="photo">
+    @if (!String.IsNullOrWhiteSpace(Model.ImageUrl))
+    {
+        <img src="@src" />
+    }
+    else
+    {
+        <img src="~/images/anime3.png" />
+    }
+</div>
+<div class="info">
+    <a data-toggle="collapse" href="#collapseExample" class="collapsed">
+        <span>
+            @Model.Name&nbsp;&nbsp;@Model.Surname
+            <b class="caret"></b>
+        </span>
+    </a>
+    <div class="clearfix"></div>
+    <div class="collapse" id="collapseExample">
+        <ul class="nav">
+            <li>
+                <a asp-action="Index" asp-controller="Manage">
+                    <span class="sidebar-mini-icon">MP</span>
+                    <span class="sidebar-normal">My Profile</span>
+                </a>
+            </li>
+            <li>
+                <a asp-action="ChangePassword" asp-controller="Manage">
+                    <span class="sidebar-mini-icon">CP</span>
+                    <span class="sidebar-normal">Change Password</span>
+                </a>
+            </li>
+            <li>
+                <a asp-action="Photos" asp-controller="Manage">
+                    <span class="sidebar-mini-icon">PP</span>
+                    <span class="sidebar-normal">Profile Picture</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>

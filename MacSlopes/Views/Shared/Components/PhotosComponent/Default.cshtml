@@ -1,0 +1,21 @@
+﻿@model UsersViewComponentViewModel
+@{
+    Layout = null;
+}
+
+    <div class="statistics">
+        <div class="info">
+            <div class="icon icon-info">
+                <i class="now-ui-icons design_image"></i>
+            </div>
+            <h3 class="info-title">@Model.UserCount</h3>
+            @if (Model.UserCount == 1)
+            {
+                <h6 class="stats-title">Gallery Image</h6>
+            }
+            else
+            {
+                <h6 class="stats-title">Gallery Images</h6>
+            }
+        </div>
+    </div>

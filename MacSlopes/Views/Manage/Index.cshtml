@@ -8,17 +8,34 @@
 
 <div class=" col-lg-6 col-md-6 ml-auto mr-auto mt-4">
     <form class="form" asp-action="Index" asp-controller="Manage">
-        <div class="input-group">
+        <div class="input-group disabled">
             <div class="input-group-prepend">
                 <div class="input-group-text"><i class="now-ui-icons users_single-02"></i></div>
             </div>
             <input asp-for="Username" class="form-control" disabled>
         </div>
+
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <div class="input-group-text">
+                    <i class="now-ui-icons users_single-02"></i>
+                </div>
+            </div>
+            <input asp-for="Name" class="form-control" />
+        </div>
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <div class="input-group-text">
+                    <i class="now-ui-icons users_single-02"></i>
+                </div>
+            </div>
+            <input asp-for="Surname" class="form-control" />
+        </div>
         @if (Model.IsEmailConfirmed)
         {
             <div class="input-group has-success">
                 <div class="input-group-prepend">
-                    <div class="input-group-text"><i class="now-ui-icons ui-1_check"></i></div>
+                    <div class="input-group-text"><i class="now-ui-icons ui-1_email-85"></i></div>
                 </div>
                 <input asp-for="Email" class="form-control form-control-success">
             </div>
@@ -35,15 +52,30 @@
         }
         <span asp-validation-for="Email" class="text-danger"></span>
 
-        <div class="input-group">
-            <div class="input-group-prepend">
-                <div class="input-group-text">
-                    <i class="now-ui-icons tech_mobile"></i>
+        @if (Model.IsPhoneConfirmed)
+        {
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                        <i class="now-ui-icons tech_mobile"></i>
+                    </div>
                 </div>
+                <input asp-for="PhoneNumber" class="form-control form-control-success" placeholder="Enter Phone number..." />
             </div>
-            <input asp-for="PhoneNumber" class="form-control" placeholder="Enter Phone number..." />
-        </div>
-        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+        }
+        else
+        {
+            <div class="input-group has-danger">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                        <i class="now-ui-icons tech_mobile"></i>
+                    </div>
+                </div>
+                <input asp-for="PhoneNumber" class="form-control form-control-danger" placeholder="Enter Phone number..." />
+            </div>
+            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+        }
 
         <div class="form-group mt-4">
             <button type="submit" class="btn btn-block btn-lg btn-primary btn-round">Update Profile</button>

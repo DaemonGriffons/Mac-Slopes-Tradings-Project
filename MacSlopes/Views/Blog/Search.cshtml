@@ -1,0 +1,102 @@
+﻿@model PostListViewModel
+@{
+    ViewData["Title"] = "Search for: " + Model.Search;
+    ViewBag.Description = "Search Results for the search query: " + Model.Search;
+}
+
+<div class="wrapper">
+    <div class="page-header page-header-mini">
+        <div class="page-header-image" data-parallax="true"></div>
+        <div class="content-center">
+            <div class="container">
+                <h2 class="category">@ViewBag.Description</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="main">
+    <div class="container">
+        <div class="row justify-content-center my-5">
+            <div class="col-md-10 mx-auto">
+                <form class="form" asp-controller="Blog" asp-route-Search="@Model.Search" asp-action="Search" method="GET">
+                    <div class="input-group">
+                        <input asp-for="Search" autocomplete="off" class="form-control" placeholder="Search For All The Blog Posts...." />
+                        <div class="input-group-append">
+                            <button type="submit" class="input-group-text">
+                                <i class="now-ui-icons ui-1_zoom-bold"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row mb-3">
+            @if (!Model.PostsIndexViewModels.Any())
+            {
+                <div class="col-md-10 mx-auto">
+                    <div class="alert alert-danger" role="alert">
+                        <div class="container">
+                            <div class="alert-icon">
+                                <i class="now-ui-icons objects_support-17"></i>
+                            </div>
+                            <strong>Arrggh Sorry</strong> We couldn't find the blog post you were looking for...
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                @foreach (var post in Model.PostsIndexViewModels)
+                {
+
+                    var src = $"/api/Images/{post.ImageUrl}";
+                    <div class="col-md-4 col-lg-4">
+                        <div class="card card-plain card-raised card-blog">
+                            <div class="card-image">
+                                <a href="@post.Link">
+                                    <img class="img rounded img-raised" src="@src" />
+                                </a>
+                            </div>
+                            <div class="card-body">
+                                <h6 class="category text-primary pull-left">
+                                    <a class="text-decoration-none text-primary" id="categoryFind" asp-controller="Blog" asp-action="Categories" asp-route-Category="@post.Category">@post.Category</a>
+                                </h6>
+                                <h6 class="category text-info pull-right">
+                                    <div class="stats stats-right">
+                                        @post.DatePublished.ToLongDateString()
+                                    </div>
+                                </h6>
+                                <br />
+                                <h4 class="card-title">
+                                    <a href="@post.Link">@post.Title</a>
+                                </h4>
+                                <p class="card-description">
+                                    @post.Description .<a href="@post.Link">Read More...</a>
+                                </p>
+                                <p class="author">
+                                    @if (!String.IsNullOrWhiteSpace(post.AuthorImage))
+                                    {
+                                        var avator = $"/api/Images/{post.AuthorImage}";
+                                        <img src="@avator" alt="Author Image" class="avatar img-raised" />
+                                    }
+                                    else
+                                    {
+                                        <img src="~/images/anime3.png" class="avatar img-raised" />
+                                    }
+                                    <span>@post.Author</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+        <div class="row d-flex justify-content-center my-4">
+            <pager asp-action="Search" asp-controller="Blog"
+                   asp-route-Search="@Model.Search"
+                   list="@Model.PostsIndexViewModels"
+                   options="@PagedListRenderOptions.TwitterBootstrapPager4"></pager>
+        </div>
+    </div>
+</div>

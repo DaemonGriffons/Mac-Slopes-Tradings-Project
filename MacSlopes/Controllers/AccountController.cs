@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Security.Policy;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
-using ClientNotifications;
+﻿using ClientNotifications;
 using ClientNotifications.Helpers;
 using MacSlopes.Entities;
 using MacSlopes.Extensions;
@@ -14,6 +7,10 @@ using MacSlopes.Services.Abstract;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Linq;
+using System.Text.Encodings.Web;
+using System.Threading.Tasks;
 
 namespace MacSlopes.Controllers
 {
@@ -54,7 +51,7 @@ namespace MacSlopes.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel model,string returnUrl=null)
+        public async Task<IActionResult> Login(LoginViewModel model,string returnUrl)
         {
             if (!ModelState.IsValid)
             {
@@ -70,7 +67,27 @@ namespace MacSlopes.Controllers
             }
 
             //TODO: Check if the user has Confirmed their Email 
+            var user = await _userManager.FindByNameAsync(model.Username);
+            if (user == null)
+            {
+                _notification.AddToastNotification("Something Went Wrong",
+                   NotificationHelper.NotificationType.error, new ToastNotificationOption
+                   {
+                       NewestOnTop = true,
+                       CloseButton = true,
+                       PositionClass = "toast-bottom-right",
+                       PreventDuplicates = true
+                   });
+                return View(model);
+            }
             //      Before Signing them In
+
+            if (user.EmailConfirmed==false)
+            {
+                return RedirectToAction(nameof(UnConfirmed));
+            }
+
+
             var result = await _signInManager
                 .PasswordSignInAsync(model.Username, model.Password, model.RememberMe, lockoutOnFailure: false);
 
@@ -97,13 +114,17 @@ namespace MacSlopes.Controllers
                     {
                         NewestOnTop = true,
                         CloseButton = true,
-                        PositionClass = "toast-top-full-width",
+                        PositionClass = "toast-bottom-right",
                         PreventDuplicates = true
                     });
                 return View(model);
             }
 
         }
+
+        [HttpGet]
+        public IActionResult UnConfirmed() => View();
+
 
         [HttpGet]
         public async Task<IActionResult> Login2Factor(bool RememberMe, string returnUrl)

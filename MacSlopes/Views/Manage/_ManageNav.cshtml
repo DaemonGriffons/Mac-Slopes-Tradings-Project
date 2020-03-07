@@ -1,6 +1,33 @@
 ﻿@using MacSlopes.Views.Manage
 
-    <ul class="nav nav-tabs justify-content-center">
+    @*<ul class="nav nav-tabs justify-content-center">
+        <li class="nav-item">
+            <a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)" asp-action="Index" asp-controller="Manage">
+                <i class="now-ui-icons users_circle-08"></i>
+                Profile
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" asp-action="ChangePassword" asp-controller="Manage">
+                <i class="now-ui-icons ui-1_lock-circle-open"></i>
+                Password
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link @ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext)" asp-action="TwoFactorAuthentication" asp-controller="Manage">
+                <i class="now-ui-icons ui-2_settings-90"></i>
+                2-Factor Authentication
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link @ManageNavPages.PhotosNavClass(ViewContext)" asp-action="Photos" asp-controller="Manage">
+                <i class="now-ui-icons media-1_camera-compact"></i>
+                Photo Upload
+            </a>
+        </li>
+    </ul>*@
+
+    <ul class="nav nav-pills nav-pills-info nav-pills-icons justify-content-center">
         <li class="nav-item">
             <a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)" asp-action="Index" asp-controller="Manage">
                 <i class="now-ui-icons users_circle-08"></i>

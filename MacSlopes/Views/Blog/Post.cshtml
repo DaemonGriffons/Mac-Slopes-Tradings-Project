@@ -1,0 +1,151 @@
+﻿@model PostDetailsViewModel
+@{
+    ViewData["Title"] = Model.Title;
+    ViewBag.Description = Model.Description;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var src = $"/api/Images/{Model.Image}";
+}
+
+<div class="wrapper">
+    <div class="page-header page-header-small">
+        <div class="page-header-image" data-parallax="true"></div>
+        <div class="content-center">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8 mx-auto text-center">
+                        <h2 class="title">@Model.Title</h2>
+                        <h4>@Model.Description</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="section">
+    <div class="section section-blog col-md-10 mx-auto">
+        <div class="container">
+            <div class="section-story-overview">
+                <div class="row">
+                    <div class="col-md-9 mx-auto">
+                        <img class="img-circle img-raised rounded" src="@src" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="section">
+        <div class="conatiner">
+            <div class="row">
+                <div class="col-md-8 mx-auto overflow-hidden">
+                    @Html.Raw(Model.Body)
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="section section-blog-info">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 mx-auto">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="blog-tags">
+                                Category:
+                                <span class="label label-primary">@Model.Category</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <partial name="SocialShare" />
+                        </div>
+                    </div>
+                    <hr />
+
+                    <div class="card card-profile card-plain">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <div class="card-avatar">
+                                    <a href="#">
+                                        @if (!String.IsNullOrWhiteSpace(Model.AuthorImage))
+                                        {
+                                            var avator = $"/api/Images/{Model.AuthorImage}";
+                                            <img src="@avator" class="img img-circle" alt="Author Image" />
+                                        }
+                                        else
+                                        {
+                                            <img class="img img-raised" src="~/images/anime3.png" />
+                                        }
+                                        <div class="ripple-container"></div>
+                                    </a>
+                                    
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <h4 class="card-title">@Model.Author</h4>
+                                <p class="description">
+                                    <i class="now-ui-icons tech_watch-time"></i>&nbsp;&nbsp;@Model.DatePosted.ToLongDateString()
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section section-comments" id="comments">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 ml-auto mr-auto">
+                    <div class="media-area">
+                        @if (Model.Comments.Count == 1)
+                        {
+                            <h3 class="title text-center">
+                                @Model.Comments.Count Comment
+                            </h3>
+                        }
+                        else
+                        {
+                            <h3 class="title text-center">
+                                @Model.Comments.Count Comments
+                            </h3>
+                        }
+
+
+                        @foreach (var comment in Model.Comments)
+                        {
+                            <div class="media">
+                                <a class="pull-left" href="#pablo">
+                                    <div class="avatar">
+                                        @if (!String.IsNullOrWhiteSpace(comment.Gravator))
+                                        {
+                                            var gravator = $"/api/Images/{comment.Gravator}";
+                                            <img class="media-object img-raised" src="@gravator" alt="Commentor Image" />
+                                        }
+                                        else
+                                        {
+                                            <img class="media-object img-raised" src="~/images/anime3.png" alt="64x64" />
+                                        }
+
+                                    </div>
+                                </a>
+                                <div class="media-body">
+                                    <h5 class="media-heading">@comment.Username <small class="text-muted">&middot;&nbsp; @comment.DatePosted.ToLongDateString() &nbsp;at&nbsp; @comment.DatePosted.ToString("HH:mm tt")</small></h5>
+
+                                    <p>@Html.Raw(comment.Message)</p>
+                                    <div class="media-footer">
+                                        <button class="btn btn-primary btn-neutral pull-right" rel="tooltip" title="Reply to Comment">
+                                            <i class="now-ui-icons ui-1_send"></i> Reply
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <h3 class="title text-center">Post your comment</h3>
+
+                   <partial name="CommentPartial" model="new CommentViewModel { PostId=Model.Slug }" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

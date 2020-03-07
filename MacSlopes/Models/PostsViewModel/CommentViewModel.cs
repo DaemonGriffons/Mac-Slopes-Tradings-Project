@@ -7,8 +7,8 @@ namespace MacSlopes.Models.PostsViewModel
         [Required]
         public string PostId { get; set; }
         [Required]
-        public int MainCommentId { get; set; }
-        [Required]
         public string Message { get; set; }
+
+        public string CommentorImage { get; set; }
     }
 }

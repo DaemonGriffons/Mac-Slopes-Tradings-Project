@@ -1,10 +1,7 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Security.AccessControl;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 
 namespace MacSlopes.Models.PostsViewModel
 {
@@ -23,12 +20,11 @@ namespace MacSlopes.Models.PostsViewModel
         public string Body { get; set; }
 
         [Required(ErrorMessage = "Post Category is Required")]
-        public string tag { get; set; }
+        public string Tag { get; set; }
 
         [Required(ErrorMessage ="Post Banner/Image is required")]
         public IFormFile Image { get; set; }
 
-        [Display(Name="Publish Blog Post ?")]
-        public bool Publish { get; set; }
+        public List<SelectListItem> Categories { get; set; }
     }
 }

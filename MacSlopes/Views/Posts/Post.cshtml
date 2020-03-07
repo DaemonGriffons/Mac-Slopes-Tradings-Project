@@ -1,5 +1,4 @@
-﻿@using Microsoft.AspNetCore.Mvc.Localization
-@model PostDetailsViewModel
+﻿@model PostDetailsViewModel
 @{
     ViewData["Title"] = $"A Blog Post About {Model.Title}";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
@@ -9,16 +8,19 @@
 <div class="panel-header">
     <div class="header text-center">
         <h1 class="title">@Model.Title</h1>
-        <h4 class="category text-white">
+        <h4 class="category text-white mb-3">
             @ViewData["Title"]<br /><br />
-           
-
+            <a class="btn btn-primary"
+               asp-action="Index"
+               asp-controller="Posts">
+                Go Back to All Posts
+            </a>
         </h4>
     </div>
 </div>
 
 <div class="content">
-    <div class="row mt-2">
+    <div class="row mt-4">
         <div class="col-md-12">
             <div class="card card-tasks">
                 <div class="card-header">
@@ -29,35 +31,27 @@
                         &nbsp;&nbsp;&nbsp;&nbsp;
                         <i class="now-ui-icons ui-1_calendar-60"></i>&nbsp;&nbsp;
                         @Model.DatePosted.ToLongDateString()
-                     </p>
+                    </p>
+                    <p class="card-category text-center">
+                        <span class="label label-large label-purple arrowed-in-right arrowed-in text-white">@Model.Category</span>
+                    </p>
                 </div>
                 <div class="card-body">
-                    <div class="row mx-4 my-4">
+                    <div class="row mx-4 my-3">
                         @if (!String.IsNullOrWhiteSpace(Model.Image))
                         {
                             var scr = $"/api/Images/{Model.Image}";
                             <img src="@scr" class="img-responsive w-100 h-25" style="max-height: 400px !important;" alt="@Model.Title image" />
                         }
                     </div>
-                    <div class="row mt-3 mx-4 border-bottom">
+                    <div class="row mt-3 mx-4 mb-4 overflow-hidden">
                         @Html.Raw(Model.Body)
                     </div>
-                    <div class="row mx-4 my-4">
-                        <div class="col-md-8 mx-auto">
-                            <div class="justify-content-center">
-                                @foreach (var cat in Model.Categories)
-                                {
-                                    <span class="badge badge-blue">
-                                        @cat.Name
-                                    </span>
-                                }
-                            </div>
-                        </div>
-                    </div>
-                    @if (!Model.MainComments.Any())
+                    
+                    @if (!Model.Comments.Any())
                     {
                         <div class="row mx-4 my-4">
-                            <div class="col-md-8 mx-auto">
+                            <div class="col-md-10 mx-auto">
                                 <div class="alert alert-danger alert-with-icon" data-notify="container">
                                     <span data-notify="icon" class="now-ui-icons objects_support-17"></span>
                                     <span data-notify="message">Aghhh.... Sorry<br />Nobody wants to share their thoughts just Yet</span>
@@ -68,29 +62,52 @@
                     else
                     {
                         <div class="row">
-                            <div class="col-md-12 mx-auto">
+                            <div class="col-md-10 mx-auto">
 
-                                @foreach (var comment in Model.MainComments)
-                                {
-                                    <ul class="timeline">
-                                        <li class="timeline">
-                                            <div class="timeline-badge">
-                                                <i class="now-ui-icons ui-2_chat-round"></i>
-                                            </div>
-                                            <div class="timeline-panel">
-                                                <div class="timeline-heading">
-                                                    <span class="badge badge-blue">@comment.Username</span>
-                                                </div>
-                                                <div class="timeline-body">
-                                                    <p>@comment.Message</p>
-                                                    <h6>
-                                                        @comment.DatePosted.ToLongDateString()
-                                                    </h6>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                }
+                                <div class="card card-timeline card-plain">
+                                    <div class="card-body">
+                                        <ul class="timeline timeline-simple">
+                                            @foreach (var comment in Model.Comments)
+                                            {
+                                                <li class="timeline-inverted">
+                                                    <div class="timeline-badge danger">
+                                                        <i class="now-ui-icons ui-2_chat-round"></i>
+                                                    </div>
+                                                    <div class="timeline-panel">
+                                                        <div class="timeline-heading">
+                                                            <span class="badge badge-primary">
+                                                                @comment.Username
+                                                            </span>
+                                                        </div>
+                                                        <div class="timeline-body">
+                                                            <p>
+                                                                @Html.Raw(comment.Message)
+                                                            </p>
+                                                            <h6>
+                                                                <i class="now-ui-icons tech_watch-time"></i> @comment.DatePosted.ToLongDateString()
+                                                            </h6>
+                                                        </div>
+
+                                                        <div class="timeline-footer pull-right">
+                                                            <div class="dropdown">
+                                                                <button type="button" class="btn btn-round btn-danger dropdown-toggle" data-toggle="dropdown">
+                                                                    <i class="now-ui-icons design_bullet-list-67"></i>
+                                                                </button>
+                                                                <div class="dropdown-menu">
+                                                                    <form asp-action="DeleteComment" asp-controller="Posts" asp-route-PostId="@Model.Id" asp-route-CommentId="@comment.Id">
+                                                                        <button type="submit" class="dropdown-item text-primary">
+                                                                            <i class="now-ui-icons ui-1_simple-remove"></i> Remove Comment
+                                                                        </button>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     }

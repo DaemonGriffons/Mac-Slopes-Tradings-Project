@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using MacSlopes.Entities;
 using System.Linq;
 using System.Threading.Tasks;
-using MacSlopes.Entities;
 
 namespace MacSlopes.Services.Abstract
 {
@@ -23,8 +22,7 @@ namespace MacSlopes.Services.Abstract
         void AddPost(Post post);
         void UpdatePost(Post post);
         void RemovePost(string Id);
-        void AddSubComment(SubComment subComment);
-
+        void RemoveComment(Comment comment);
 
         Task<bool> SaveChangesAsync();
     }

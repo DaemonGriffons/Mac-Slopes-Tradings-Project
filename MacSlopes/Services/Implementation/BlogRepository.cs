@@ -1,14 +1,13 @@
-﻿using System;
+﻿using MacSlopes.Entities;
+using MacSlopes.Entities.Data;
+using MacSlopes.Services.Abstract;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MacSlopes.Entities;
-using MacSlopes.Entities.Data;
-using MacSlopes.Services.Abstract;
-using Microsoft.EntityFrameworkCore;
-using Remotion.Linq.Clauses;
 
 namespace MacSlopes.Services.Implementation
 {
@@ -31,33 +30,26 @@ namespace MacSlopes.Services.Implementation
         public IQueryable<Post> GetCategoryPosts(string category)
         {
             return _context.Posts
-                .Include(x => x.Categories.Where(c => c.Name.Equals(category, StringComparison.OrdinalIgnoreCase)));
+                .Include(u=>u.User)
+                .Where(cat => cat.CategoryId.Equals(category));
         }
 
 
         public Post GetPost(string Id)
         {
-            //This is what i tried to do but it is refusing
-            //please help!!
-            // can you push your code to a repo and i have a loo at it tomorrow? 
-            // I have homeworks to complete tonight,
-            // did youuse a generic repo for this?
-            //wouldn't say generic but problem specific!
-            //I will push it and i'll work on react for tonigth.. i
-//sure case send me the link and i will check it clearly on my machine. you complicated things that were suppose to be simple.
-//i was learning from a youtube tutorial that was very simplified and i needed to enhance a few things that were real world aplicable
-            return _context.Posts.Include(c=>c.Categories)
-                .Include(p => p.MainComments)
-                .ThenInclude(p => p.SubComments)
-                 .FirstOrDefault(options => options.Id.Equals(Id));
+            return _context.Posts
+                .Include(u=>u.User)
+                .Include(p => p.Comments)
+                .FirstOrDefault(options => options.Id.Equals(Id));
 
         }
 
         public IQueryable<Post> GetPosts()
         {
             return _context.Posts
-                .Include(x => x.MainComments)
-                .OrderByDescending(x => x.DatePublished);
+                .Include(u=>u.User)
+                .OrderBy(x=>x.DateCreated)
+                .OrderByDescending(x => x.DateCreated);
         }
 
         public void RemovePost(string Id)
@@ -76,28 +68,24 @@ namespace MacSlopes.Services.Implementation
             _context.Posts.Update(post);
         }
 
-        public void AddSubComment(SubComment subComment)
-        {
-            _context.SubComments.Add(subComment);
-        }
 
         public IQueryable<Post> SearchPosts(string query)
         {
             return _context.Posts
-                .Include(x => x.MainComments)
-                .Include(q=>q.Categories)
-                .Where(x => x.Title.Contains(query, StringComparison.OrdinalIgnoreCase)
-                || x.Body.Contains(query, StringComparison.OrdinalIgnoreCase)
-                || x.Description.Contains(query, StringComparison.OrdinalIgnoreCase)
-                || x.Author.Contains(query, StringComparison.OrdinalIgnoreCase));
+                .Include(u=>u.User)
+                .Where(x => x.Title.Contains(query)
+                || x.Body.Contains(query)
+                || x.Description.Contains(query)
+                || x.CategoryId.Contains(query)
+                || x.Author.Contains(query));
         }
 
         public Post GetPostBySlug(string slug)
         {
-            return _context.Posts.Include(s=>s.Categories)
-                .Include(x => x.MainComments)
-                 .ThenInclude(c => c.SubComments)
-                 .FirstOrDefault(a => a.Slug.Equals(slug, StringComparison.OrdinalIgnoreCase));
+            return _context.Posts
+                .Include(u=>u.User)
+                .Include(x => x.Comments)
+                 .FirstOrDefault(a => a.Slug.Equals(slug));
         }
 
         public string CreateSlug(string title)
@@ -119,18 +107,6 @@ namespace MacSlopes.Services.Implementation
             return $"/Blog/{System.Net.WebUtility.UrlEncode(Slug)}/";
         }
 
-        //public IQueryable<Post> GetPostCategory(string Id)
-        //{
-        //    var query = (from p in _context.Posts
-        //                 join c in _context.Categories on p.CategoryId equals c.Id
-        //                 where p.Id == Id
-        //                 select new
-        //                 {
-        //                     Post = p,
-        //                     CategoryName = c.Name
-        //                 });
-        //    return query.AsQueryable<Post>();
-        //}
 
         private static string RemoveReservedUrlCharacters(string text)
         {
@@ -159,6 +135,11 @@ namespace MacSlopes.Services.Implementation
             }
 
             return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
+        }
+
+        public void RemoveComment(Comment comment)
+        {
+            _context.Comments.Remove(comment);
         }
     }
 }

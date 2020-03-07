@@ -1,22 +1,30 @@
-﻿@model ErrorViewModel
+﻿
 @{
     ViewData["Title"] = "Error";
 }
 
-<h1 class="text-danger">Error.</h1>
-<h2 class="text-danger">An error occurred while processing your request.</h2>
+<div class="wrapper">
+    <div class="page-header page-header-mini">
+        <div class="page-header-image" data-parallax="true">
+        </div>
+        <div class="content-center">
+            <div class="row">
+                <div class="col-md-8 ml-auto mr-auto">
+                    <h1 class="title">OOPS!</h1>
+                </div>
+            </div>
+        </div>
+    </div>
 
-@if (Model.ShowRequestId)
-{
-    <p>
-        <strong>Request ID:</strong> <code>@Model.RequestId</code>
-    </p>
-}
-
-<h3>Development Mode</h3>
-<p>
-    Swapping to <strong>Development</strong> environment will display more detailed information about the error that occurred.
-</p>
-<p>
-    <strong>Development environment should not be enabled in deployed applications</strong>, as it can result in sensitive information from exceptions being displayed to end users. For local debugging, development environment can be enabled by setting the <strong>ASPNETCORE_ENVIRONMENT</strong> environment variable to <strong>Development</strong>, and restarting the application.
-</p>
+    <div class="content-center">
+        <div class="container">
+            <div class="row justify-content-center mt-5 mb-3">
+                <h3 class="text-center">Something Wen't Wrong... We'll Take care of it Soon.. The Error Has been Noted</h3>
+                <br />
+            </div>
+            <div class="row justify-content-center mb-5">
+                <a class="btn btn-primary btn-lg btn-round text-center" asp-action="Index" asp-controller="Home">Go Back</a>
+            </div>
+        </div>
+    </div>
+</div>

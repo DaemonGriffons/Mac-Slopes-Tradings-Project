@@ -5,12 +5,6 @@ body {
     padding: 0 !important;
 }
 
-/* Wrapping element */
-/* Set some basic padding to keep content from hitting the edges */
-.body-content {
-    padding-left: 15px;
-    padding-right: 15px;
-}
 
 /* Carousel */
 .carousel-caption p {
@@ -20,6 +14,9 @@ body {
 
 .page-header-image{
     background-image:url(/images/login.jpg) !important;
+}
+.subscribe-line-image{
+    background-image:url(/images/bg23.jpg) !important;
 }
 
 .card-footer{
@@ -42,14 +39,24 @@ body {
     background-position: center !important;
 }
 .imageresize{
-    height: 80px !important;
-    width: 120px !important;
-    margin: 15px !important;
+    max-height: 100px !important;
+    max-width: 100px !important;
 }
 #cke_BlogBody{
     width: 100% !important;
 }
 
+#categoryFind:hover {
+    text-decoration: none !important;
+    color: #f96332 !important;
+    border:none !important;
+}
+
+#categoryFind:focus {
+    text-decoration: none !important;
+    color: #f96332 !important;
+    border: none !important;
+}
 .input-group > input[type=file] {
     color: inherit !important;
     background-color: inherit !important;
@@ -66,6 +73,48 @@ body {
 #qrCode {
     margin: 15px;
 }
+
+.card-background{
+    background-image:url(/images/project8.jpg) !important;
+}
+.image-left{
+    background-image:url(/images/bg38.jpg) !important;
+}
+.image-right{
+    background-image:url(/images/bg39.jpg) !important;
+}
+.image-left-bottom{
+    background-image:url(/images/bg24.jpg) !important;
+}
+.section-image{
+    background-image:url(/images/bg23.jpg) !important;
+}
+.PagedList-skipToPrevious.disabled > a {
+    color: #2CA8FF !important;
+    border-color: #2CA8FF !important;
+}
+.PagedList-skipToNext.disabled > a {
+    color: #2CA8FF !important;
+    border-color: #2CA8FF !important;
+}
+.pagination > .page-item.active > a.page-link {
+    background-color: #f96332 !important;
+    border-color: #f96332 !important;
+    color:#ffffff !important;
+}
+.pagination > .page-item > a.page-link {
+    color: #2CA8FF !important;
+    border-color: #2CA8FF !important;
+}
+.card-tasks > .row > .col-md-6 > img.position-relative {
+    top: -40px !important;
+    height: 300px !important;
+}
+
+.blog-img{
+    max-height: 75vh !important;
+}
+
 
 /* Hide/rearrange for smaller screens */
 @media screen and (max-width: 767px) {

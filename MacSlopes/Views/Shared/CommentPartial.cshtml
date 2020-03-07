@@ -1,0 +1,27 @@
+﻿@model CommentViewModel
+@{ 
+}
+<div class="media media-post">
+    <a class="pull-left author" href="#">
+        <div class="avatar">
+            <img class="media-object img-raised" alt="64x64" src="~/images/anime3.png" />
+        </div>
+    </a>
+    <div class="media-body">
+        <form asp-action="Comment" asp-controller="Blog">
+            <input asp-for="PostId" type="hidden" />
+
+            <textarea asp-for="Message" class="form-control" placeholder="Please do share your thoughts on this matter..." rows="4"></textarea>
+            <span asp-validation-for="Message" class="text-primary"></span>
+            <div class="media-footer">
+                <button type="submit" class="btn btn-primary pull-right">
+                    <i class="now-ui-icons ui-1_send"></i> Reply
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts{ 
+<partial name="_ValidationScriptsPartial" />
+}

@@ -9,7 +9,9 @@ namespace MacSlopes.Entities
         public Post()
         {
             Categories=new List<Category>();
-            MainComments=new List<MainComment>();
+            Comments=new List<Comment>();
+
+            DateCreated = DateTime.Now;
         }
         [Key]
         public string Id { get; set; }
@@ -17,6 +19,7 @@ namespace MacSlopes.Entities
         [Required]
         [MaxLength(256)]
         public string Author { get; set; }
+
 
         [Required]
         [MaxLength(256)]
@@ -37,16 +40,17 @@ namespace MacSlopes.Entities
         [MaxLength(1024)]
         public string ImageUrl { get; set; }
 
-        [Required]
-        public DateTime DatePublished { get; set; }
+        public DateTime DateCreated { get; private set; }
 
-        public bool IsPublished { get; set; }
 
         public ICollection<Category> Categories { get; set; }
         public string CategoryId { get; set; }
 
 
-        public ICollection<MainComment> MainComments { get; set; }
+        public ICollection<Comment> Comments { get; set; }
+
+        public string UserId { get; set; }
+        public User User { get; set; }
 
     }
 }

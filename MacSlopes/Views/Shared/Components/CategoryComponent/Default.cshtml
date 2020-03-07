@@ -1,0 +1,10 @@
+﻿@model IEnumerable<CategoryIndexViewModel>
+
+<ul class="list-group list-group-flush">
+    @foreach (var category in Model)
+    {
+        <li class="list-group-item ml-2">
+            <a class="text-decoration-none" asp-route-category="@category.Name" asp-action="Category" asp-controller="Blog">@category.Name</a>
+        </li>
+    }
+</ul>

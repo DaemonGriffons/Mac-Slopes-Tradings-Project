@@ -1,9 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
-using ClientNotifications;
+﻿using ClientNotifications;
 using ClientNotifications.Helpers;
 using MacSlopes.Entities;
 using MacSlopes.Extensions;
@@ -13,6 +8,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using System;
+using System.Linq;
+using System.Text;
+using System.Text.Encodings.Web;
+using System.Threading.Tasks;
 
 namespace MacSlopes.Controllers
 {
@@ -63,9 +63,12 @@ namespace MacSlopes.Controllers
 
             var model = new IndexViewModel
             {
+                Name = user.Name,
+                Surname = user.Surname,
                 Username = user.UserName,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
+                IsPhoneConfirmed = user.PhoneNumberConfirmed,
                 IsEmailConfirmed = user.EmailConfirmed
             };
             return View(model);
@@ -84,7 +87,7 @@ namespace MacSlopes.Controllers
                     {
                         NewestOnTop = true,
                         CloseButton = true,
-                        PositionClass = "toast-top-full-width",
+                        PositionClass = "toast-bottom-right",
                         PreventDuplicates = true
                     });
                     return View(model);
@@ -100,7 +103,7 @@ namespace MacSlopes.Controllers
                         {
                             NewestOnTop = true,
                             CloseButton = true,
-                            PositionClass = "toast-top-full-width",
+                            PositionClass = "toast-bottom-right",
                             PreventDuplicates = true
                         });
                         return View(model);
@@ -117,12 +120,40 @@ namespace MacSlopes.Controllers
                         {
                             NewestOnTop = true,
                             CloseButton = true,
-                            PositionClass = "toast-top-full-width",
+                            PositionClass = "toast-bottom-right",
                             PreventDuplicates = true
                         });
                         return View(model);
                     }
                 }
+
+                var updatedUser = new User
+                {
+                    Name = model.Name,
+                    Surname = model.Surname,
+                    PhoneNumber = model.PhoneNumber
+                };
+
+                var updateResult = await _userManager.UpdateAsync(updatedUser);
+                if (!updateResult.Succeeded)
+                {
+                    _clientNotification.AddToastNotification($"Unexpected error occurred while updating your Details", NotificationHelper.NotificationType.error, new ToastNotificationOption
+                    {
+                        NewestOnTop = true,
+                        CloseButton = true,
+                        PositionClass = "toast-bottom-right",
+                        PreventDuplicates = true
+                    });
+                    return View(model);
+                }
+                _clientNotification.AddToastNotification("Updated Your Details Successfully", NotificationHelper.NotificationType.success, new ToastNotificationOption
+                {
+                    NewestOnTop = true,
+                    CloseButton = true,
+                    PositionClass = "toast-bottom-right",
+                    PreventDuplicates = true
+                });
+                return View(model);
             }
             return View(model);
         }
@@ -141,7 +172,7 @@ namespace MacSlopes.Controllers
                     {
                         NewestOnTop = true,
                         CloseButton = true,
-                        PositionClass = "toast-top-full-width",
+                        PositionClass = "toast-bottom-right",
                         PreventDuplicates = true
                     });
                 }
@@ -159,7 +190,7 @@ namespace MacSlopes.Controllers
                 {
                     NewestOnTop = true,
                     CloseButton = true,
-                    PositionClass = "toast-top-full-width",
+                    PositionClass = "toast-bottom-right",
                     PreventDuplicates = true
                 });
                 return View(model);
@@ -176,7 +207,7 @@ namespace MacSlopes.Controllers
                 {
                     NewestOnTop = true,
                     CloseButton = true,
-                    PositionClass = "toast-top-full-width",
+                    PositionClass = "toast-bottom-right",
                     PreventDuplicates = true
                 });
             }
@@ -205,7 +236,7 @@ namespace MacSlopes.Controllers
                     {
                         NewestOnTop = true,
                         CloseButton = true,
-                        PositionClass = "toast-top-full-width",
+                        PositionClass = "toast-bottom-right",
                         PreventDuplicates = true
                     });
                 }
@@ -235,7 +266,7 @@ namespace MacSlopes.Controllers
                 {
                     NewestOnTop = true,
                     CloseButton = true,
-                    PositionClass = "toast-top-full-width",
+                    PositionClass = "toast-bottom-right",
                     PreventDuplicates = true
                 });
             }
@@ -262,7 +293,7 @@ namespace MacSlopes.Controllers
                     {
                         NewestOnTop = true,
                         CloseButton = true,
-                        PositionClass = "toast-top-full-width",
+                        PositionClass = "toast-bottom-right",
                         PreventDuplicates = true
                     });
                 }
@@ -291,7 +322,7 @@ namespace MacSlopes.Controllers
                 {
                     NewestOnTop = true,
                     CloseButton = true,
-                    PositionClass = "toast-top-full-width",
+                    PositionClass = "toast-bottom-right",
                     PreventDuplicates = true
                 });
             }
@@ -315,7 +346,7 @@ namespace MacSlopes.Controllers
                 {
                     NewestOnTop = true,
                     CloseButton = true,
-                    PositionClass = "toast-top-full-width",
+                    PositionClass = "toast-bottom-right",
                     PreventDuplicates = true
                 });
             }
@@ -326,7 +357,7 @@ namespace MacSlopes.Controllers
                 {
                     NewestOnTop = true,
                     CloseButton = true,
-                    PositionClass = "toast-top-full-width",
+                    PositionClass = "toast-bottom-right",
                     PreventDuplicates = true
                 });
             }
@@ -345,7 +376,7 @@ namespace MacSlopes.Controllers
                 {
                     NewestOnTop = true,
                     CloseButton = true,
-                    PositionClass = "toast-top-full-width",
+                    PositionClass = "toast-bottom-right",
                     PreventDuplicates = true
                 });
             }
@@ -357,7 +388,7 @@ namespace MacSlopes.Controllers
                 {
                     NewestOnTop = true,
                     CloseButton = true,
-                    PositionClass = "toast-top-full-width",
+                    PositionClass = "toast-bottom-right",
                     PreventDuplicates = true
                 });
             }
@@ -375,7 +406,7 @@ namespace MacSlopes.Controllers
                 {
                     NewestOnTop = true,
                     CloseButton = true,
-                    PositionClass = "toast-top-full-width",
+                    PositionClass = "toast-bottom-right",
                     PreventDuplicates = true
                 });
             }
@@ -397,7 +428,7 @@ namespace MacSlopes.Controllers
                 {
                     NewestOnTop = true,
                     CloseButton = true,
-                    PositionClass = "toast-top-full-width",
+                    PositionClass = "toast-bottom-right",
                     PreventDuplicates = true
                 });
             }
@@ -420,7 +451,7 @@ namespace MacSlopes.Controllers
                 {
                     NewestOnTop = true,
                     CloseButton = true,
-                    PositionClass = "toast-top-full-width",
+                    PositionClass = "toast-bottom-right",
                     PreventDuplicates = true
                 });
                 await LoadSharedKeyAndQrCodeUriAsync(user, model);
@@ -467,7 +498,7 @@ namespace MacSlopes.Controllers
                 {
                     NewestOnTop = true,
                     CloseButton = true,
-                    PositionClass = "toast-top-full-width",
+                    PositionClass = "toast-bottom-right",
                     PreventDuplicates = true
                 });
             }
@@ -487,7 +518,7 @@ namespace MacSlopes.Controllers
                 {
                     NewestOnTop = true,
                     CloseButton = true,
-                    PositionClass = "toast-top-full-width",
+                    PositionClass = "toast-bottom-right",
                     PreventDuplicates = true
                 });
             }
@@ -498,7 +529,7 @@ namespace MacSlopes.Controllers
                 {
                     NewestOnTop = true,
                     CloseButton = true,
-                    PositionClass = "toast-top-full-width",
+                    PositionClass = "toast-bottom-right",
                     PreventDuplicates = true
                 });
             }
@@ -517,7 +548,7 @@ namespace MacSlopes.Controllers
                 {
                     NewestOnTop = true,
                     CloseButton = true,
-                    PositionClass = "toast-top-right",
+                    PositionClass = "toast-bottom-right",
                     PreventDuplicates = true
                 });
             }
@@ -527,7 +558,7 @@ namespace MacSlopes.Controllers
                 {
                     NewestOnTop = true,
                     CloseButton = true,
-                    PositionClass = "toast-top-full-width",
+                    PositionClass = "toast-bottom-right",
                     PreventDuplicates = true
                 });
             }
@@ -548,7 +579,7 @@ namespace MacSlopes.Controllers
                 {
                     NewestOnTop = true,
                     CloseButton = true,
-                    PositionClass = "toast-top-full-width",
+                    PositionClass = "toast-bottom-right",
                     PreventDuplicates = true
                 });
                 return View();
@@ -576,7 +607,7 @@ namespace MacSlopes.Controllers
                     {
                         NewestOnTop = true,
                         CloseButton = true,
-                        PositionClass = "toast-top-full-width",
+                        PositionClass = "toast-bottom-right",
                         PreventDuplicates = true
                     });
                     return View(model);
@@ -588,7 +619,7 @@ namespace MacSlopes.Controllers
                     {
                         NewestOnTop = true,
                         CloseButton = true,
-                        PositionClass = "toast-top-full-width",
+                        PositionClass = "toast-bottom-right",
                         PreventDuplicates = true
                     });
                     return View(model);
@@ -602,7 +633,7 @@ namespace MacSlopes.Controllers
                         {
                             NewestOnTop = true,
                             CloseButton = true,
-                            PositionClass = "toast-top-full-width",
+                            PositionClass = "toast-bottom-right",
                             PreventDuplicates = true
                         });
                         return View(model);
@@ -615,7 +646,7 @@ namespace MacSlopes.Controllers
                         {
                             NewestOnTop = true,
                             CloseButton = true,
-                            PositionClass = "toast-top-full-width",
+                            PositionClass = "toast-bottom-right",
                             PreventDuplicates = true
                         });
                         return View(model);
@@ -634,7 +665,7 @@ namespace MacSlopes.Controllers
                                     {
                                         NewestOnTop = true,
                                         CloseButton = true,
-                                        PositionClass = "toast-top-full-width",
+                                        PositionClass = "toast-bottom-right",
                                         PreventDuplicates = true
                                     });
                                 return RedirectToAction(nameof(Photos));
@@ -649,7 +680,7 @@ namespace MacSlopes.Controllers
                                 {
                                     NewestOnTop = true,
                                     CloseButton = true,
-                                    PositionClass = "toast-top-full-width",
+                                    PositionClass = "toast-bottom-right",
                                     PreventDuplicates = true
                                 });
                             return RedirectToAction(nameof(Photos));
@@ -665,7 +696,7 @@ namespace MacSlopes.Controllers
                 {
                     NewestOnTop = true,
                     CloseButton = true,
-                    PositionClass = "toast-top-full-width",
+                    PositionClass = "toast-bottom-right",
                     PreventDuplicates = true
                 });
             return View(model);
